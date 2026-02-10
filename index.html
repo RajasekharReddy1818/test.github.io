@@ -7,36 +7,59 @@
 
     <style>
         :root {
-            --white: #ffffff;
             --orange: #f97316;
             --orange-dark: #ea580c;
             --dark: #1f2937;
-            --soft: #f8fafc;
         }
 
         /* RESET */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: "Segoe UI",sans-serif;
         }
 
         body {
-            background: var(--white);
             color: #374151;
             overflow-x: hidden;
         }
 
-        /* ================= BRAND NAME ANIMATION ================= */
-        .brand span {
-            display: inline-block;
-            animation: brandGlow 3s infinite;
+        /* ===== CANVAS BACKGROUND ===== */
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
         }
 
-        .brand span {
-            animation-delay: calc(var(--i) * 0.12s);
+        /* keep content above canvas */
+        header, section, footer, .cart, .overlay {
+            position: relative;
+            z-index: 1;
         }
+
+        /* ===== HEADER ===== */
+        header {
+            padding: 22px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.95);
+            border-bottom: 2px solid #000;
+            border-radius: 0 0 18px 18px; /* ONLY bottom corners */
+        }
+
+        /* BRAND */
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+            .brand span {
+                display: inline-block;
+                animation: brandGlow 3s infinite;
+                animation-delay: calc(var(--i)*0.12s);
+            }
 
         @keyframes brandGlow {
             0% {
@@ -47,22 +70,14 @@
                 color: var(--orange);
             }
 
-            60% {
-                color: var(--dark);
-            }
-
-            100% {
+            60%,100% {
                 color: var(--dark);
             }
         }
 
-        /* ================= HEADER ================= */
-        header {
-            padding: 22px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e5e7eb;
+        .tagline {
+            color: var(--orange);
+            font-weight: 600;
         }
 
         .header-right {
@@ -71,39 +86,19 @@
             gap: 16px;
         }
 
-        .brand {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .tagline {
-            color: var(--orange);
-            font-weight: 600;
-        }
-
-        /* ================= CART BUTTON ================= */
+        /* CART BUTTON */
         .cart-button {
             position: relative;
             width: 44px;
             height: 44px;
             border-radius: 12px;
             background: #fff;
-            border: 1px solid #e5e7eb;
+            border: 3px solid #545454;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: .2s;
         }
-
-            .cart-button:hover {
-                background: #fff7ed;
-                border-color: var(--orange);
-            }
-
-            .cart-button:active {
-                transform: scale(.94);
-            }
 
             .cart-button svg {
                 width: 22px;
@@ -127,11 +122,10 @@
             justify-content: center;
         }
 
-        /* ================= HERO ================= */
+        /* ===== HERO ===== */
         .hero {
-            padding: 90px 20px;
+            padding: 120px 20px 140px;
             text-align: center;
-            background: linear-gradient(135deg,#fce4c5,#fff);
         }
 
             .hero h2 {
@@ -140,7 +134,7 @@
             }
 
                 .hero h2 span {
-                    color: var(--orange);
+                    color: #823600;
                 }
 
             .hero p {
@@ -150,16 +144,14 @@
                 color: #4b5563;
             }
 
-        /* ================= PRODUCTS ================= */
+        /* ===== PRODUCTS ===== */
         .products {
-            background: var(--soft);
-            padding: 80px 20px;
+            padding: 120px 20px;
         }
 
             .products h3 {
                 text-align: center;
                 font-size: 30px;
-                color: var(--dark);
                 margin-bottom: 50px;
             }
 
@@ -173,7 +165,7 @@
 
         .card {
             background: #fff;
-            border-radius: 14px;
+            border-radius: 16px;
             box-shadow: 0 12px 30px rgba(0,0,0,.08);
             overflow: hidden;
             transition: .25s;
@@ -199,7 +191,7 @@
             margin-bottom: 14px;
         }
 
-        /* ================= ADD / REMOVE CONTROLS ================= */
+        /* CONTROLS */
         .controls {
             display: flex;
             align-items: center;
@@ -214,12 +206,7 @@
                 font-size: 18px;
                 font-weight: 700;
                 cursor: pointer;
-                transition: .15s;
             }
-
-                .controls button:active {
-                    transform: scale(.9);
-                }
 
         .add {
             background: var(--orange);
@@ -236,7 +223,7 @@
             font-weight: 700;
         }
 
-        /* ================= OVERLAY + CART ================= */
+        /* ===== OVERLAY + CART ===== */
         .overlay {
             position: fixed;
             inset: 0;
@@ -260,6 +247,8 @@
             height: 100%;
             background: #fff;
             padding: 25px;
+            border-bottom: 2px solid #000;
+            border-radius: 0 0 20px 20px; /* bottom only */
             box-shadow: -10px 0 30px rgba(0,0,0,.15);
             transition: .3s;
             z-index: 999;
@@ -267,11 +256,6 @@
 
             .cart.open {
                 right: 0;
-            }
-
-            .cart h3 {
-                margin-bottom: 20px;
-                color: var(--dark);
             }
 
         .cart-item {
@@ -287,30 +271,19 @@
             color: var(--orange);
         }
 
-        /* ================= ORDER BUTTON ================= */
         .order-btn {
             margin-top: 20px;
             width: 100%;
             padding: 16px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             background: var(--orange);
             color: #fff;
             font-weight: 700;
-            font-size: 16px;
             cursor: pointer;
-            transition: .2s;
         }
 
-            .order-btn:hover {
-                background: var(--orange-dark);
-            }
-
-            .order-btn:active {
-                transform: scale(.96);
-            }
-
-        /* ================= FOOTER ================= */
+        /* FOOTER */
         footer {
             background: var(--dark);
             color: #d1d5db;
@@ -318,12 +291,8 @@
             padding: 30px;
         }
 
-        /* ================= MOBILE ================= */
+        /* MOBILE */
         @media(max-width:768px) {
-            header {
-                padding: 16px 18px;
-            }
-
             .tagline {
                 display: none;
             }
@@ -331,83 +300,13 @@
             .hero h2 {
                 font-size: 30px;
             }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .products {
-                padding: 60px 16px;
-            }
-
-            .cart {
-                width: 100%;
-                right: -100%;
-            }
-
-                .cart.open {
-                    right: 0;
-                }
         }
-
-        .cart {
-            position: fixed;
-            top: 0;
-            right: -360px;
-            width: 360px;
-            height: 100%;
-            background: #fff;
-            padding: 25px;
-            box-shadow: -10px 0 30px rgba(0,0,0,.15);
-            transition: .3s;
-            z-index: 999;
-        }
-
-            .cart.open {
-                right: 0;
-            }
-
-            .cart h3 {
-                margin-bottom: 20px;
-                color: var(--dark);
-            }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .cart-total {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--orange);
-        }
-
-        .order-btn {
-            margin-top: 20px;
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: var(--orange);
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        footer {
-            background: var(--dark);
-            color: #d1d5db;
-            text-align: center;
-            padding: 30px;
-        }
-
     </style>
 </head>
 
 <body>
+
+    <canvas id="bg-canvas"></canvas>
 
     <header>
         <div class="brand">
@@ -437,7 +336,6 @@
 
     <section class="products">
         <h3>Our Products</h3>
-
         <div class="grid">
 
             <div class="card">
@@ -507,12 +405,11 @@
     <footer>© 2026 Vamsi Foods</footer>
 
     <script>
+        /* ===== CART LOGIC ===== */
         const cart = {};
 
         function addItem(name, price) {
-            cart[name] = cart[name]
-                ? { ...cart[name], qty: cart[name].qty + 1 }
-                : { price, qty: 1 };
+            cart[name] = cart[name] ? { ...cart[name], qty: cart[name].qty + 1 } : { price, qty: 1 };
             updateUI();
         }
 
@@ -528,68 +425,108 @@
             let count = 0, total = 0;
             const list = document.getElementById("cart-items");
             list.innerHTML = "";
-
-            // 🔴 Reset ALL quantity displays first
-            document.querySelectorAll(".qty").forEach(q => {
-                q.textContent = 0;
-            });
+            document.querySelectorAll(".qty").forEach(q => q.textContent = 0);
 
             Object.keys(cart).forEach(name => {
                 const item = cart[name];
                 count += item.qty;
                 total += item.qty * item.price;
-
                 list.innerHTML += `
-      <div class="cart-item">
-        <span>${name} × ${item.qty}</span>
-        <span>₹${item.qty * item.price}</span>
-      </div>`;
-
-                const qtyEl = document.getElementById("qty-" + name);
-                if (qtyEl) qtyEl.textContent = item.qty;
+          <div class="cart-item">
+            <span>${name} × ${item.qty}</span>
+            <span>₹${item.qty * item.price}</span>
+          </div>`;
+                document.getElementById("qty-" + name).textContent = item.qty;
             });
 
             document.getElementById("cart-count").textContent = count;
             document.getElementById("total").textContent = total;
         }
 
-
         function toggleCart() {
             document.getElementById("cart").classList.toggle("open");
             document.getElementById("overlay").classList.toggle("show");
         }
 
-        function generateOrderId() {
-            return "VF-" + Math.floor(100000 + Math.random() * 900000);
+        /* ===== GRADIENT + WAVE-LIKE PARTICLES ===== */
+        const canvas = document.getElementById("bg-canvas");
+        const ctx = canvas.getContext("2d");
+        let w, h, time = 0, mouse = { x: -999, y: -999 };
+        let particles = [];
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resize);
+        resize();
+
+        window.addEventListener("mousemove", e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        for (let i = 0; i < 120; i++) {
+            particles.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                vx: 0,
+                vy: 0,
+                r: Math.random() * 2 + 1,
+                offset: Math.random() * Math.PI * 2
+            });
         }
 
-        function sendWhatsAppOrder() {
-            const SELLER_NUMBER = "917989116107"; // PUT YOUR NUMBER HERE
+        function lerp(a, b, t) { return a + (b - a) * t; }
 
-            if (Object.keys(cart).length === 0) {
-                alert("Your cart is empty.");
-                return;
-            }
+        function animate() {
+            time += 0.005;
 
-            const orderId = generateOrderId();
-            let message = `Order ID: ${orderId}\n\nNew Order - Vamsi Foods\n\n`;
-            let total = 0;
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, "#f97316");
+            grad.addColorStop(1, "#ffffff");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
 
-            Object.keys(cart).forEach(name => {
-                const item = cart[name];
-                const itemTotal = item.qty * item.price;
-                total += itemTotal;
-                message += `- ${name} x ${item.qty} = ₹${itemTotal}\n`;
+            particles.forEach(p => {
+                // gentle wave drift
+                p.vx += Math.cos(time + p.offset) * 0.002;
+                p.vy += Math.sin(time + p.offset) * 0.002;
+
+                // cursor repulsion
+                const dx = p.x - mouse.x;
+                const dy = p.y - mouse.y;
+                const d = Math.sqrt(dx * dx + dy * dy);
+                if (d < 120) {
+                    p.vx += dx / d * 0.05;
+                    p.vy += dy / d * 0.05;
+                }
+
+                // damping
+                p.vx *= 0.97;
+                p.vy *= 0.97;
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > w) p.vx *= -1;
+                if (p.y < 0 || p.y > h) p.vy *= -1;
+
+                const t = p.y / h;
+                const r = Math.round(lerp(255, 249, t));
+                const g = Math.round(lerp(255, 115, t));
+                const b = Math.round(lerp(255, 22, t));
+
+                ctx.fillStyle = `rgba(${r},${g},${b},0.65)`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
             });
 
-            message += `\nTotal: ₹${total}\nPlease confirm this order.`;
-
-            const url = `https://wa.me/${SELLER_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(url, "_blank");
+            requestAnimationFrame(animate);
         }
+        animate();
     </script>
 
 </body>
 </html>
-
-
