@@ -131,7 +131,7 @@
         .hero {
             padding: 90px 20px;
             text-align: center;
-            background: linear-gradient(135deg,#fff7ed,#fff);
+            background: linear-gradient(135deg,#fce4c5,#fff);
         }
 
             .hero h2 {
@@ -529,16 +529,21 @@
             const list = document.getElementById("cart-items");
             list.innerHTML = "";
 
+            // 🔴 Reset ALL quantity displays first
+            document.querySelectorAll(".qty").forEach(q => {
+                q.textContent = 0;
+            });
+
             Object.keys(cart).forEach(name => {
                 const item = cart[name];
                 count += item.qty;
                 total += item.qty * item.price;
 
                 list.innerHTML += `
-                  <div class="cart-item">
-                    <span>${name} × ${item.qty}</span>
-                    <span>₹${item.qty * item.price}</span>
-                  </div>`;
+      <div class="cart-item">
+        <span>${name} × ${item.qty}</span>
+        <span>₹${item.qty * item.price}</span>
+      </div>`;
 
                 const qtyEl = document.getElementById("qty-" + name);
                 if (qtyEl) qtyEl.textContent = item.qty;
@@ -547,6 +552,7 @@
             document.getElementById("cart-count").textContent = count;
             document.getElementById("total").textContent = total;
         }
+
 
         function toggleCart() {
             document.getElementById("cart").classList.toggle("open");
