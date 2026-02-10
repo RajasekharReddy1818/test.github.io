@@ -46,7 +46,7 @@
             align-items: center;
             background: rgba(255,255,255,0.95);
             border-bottom: 2px solid #000;
-            border-radius: 0 0 18px 18px; /* ONLY bottom corners */
+            border-radius: 0 0 18px 18px;
         }
 
         /* BRAND */
@@ -248,7 +248,7 @@
             background: #fff;
             padding: 25px;
             border-bottom: 2px solid #000;
-            border-radius: 0 0 20px 20px; /* bottom only */
+            border-radius: 0 0 20px 20px;
             box-shadow: -10px 0 30px rgba(0,0,0,.15);
             transition: .3s;
             z-index: 999;
@@ -448,10 +448,11 @@
             document.getElementById("overlay").classList.toggle("show");
         }
 
-        /* ===== GRADIENT + WAVE-LIKE PARTICLES ===== */
+        /* ===== GRADIENT + MOBILE-AWARE FLOATING PARTICLES ===== */
         const canvas = document.getElementById("bg-canvas");
         const ctx = canvas.getContext("2d");
-        let w, h, time = 0, mouse = { x: -999, y: -999 };
+        let w, h, time = 0;
+        let pointer = { x: -999, y: -999 };
         let particles = [];
 
         function resize() {
@@ -461,12 +462,26 @@
         window.addEventListener("resize", resize);
         resize();
 
+        /* desktop */
         window.addEventListener("mousemove", e => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
+            pointer.x = e.clientX;
+            pointer.y = e.clientY;
         });
 
-        for (let i = 0; i < 120; i++) {
+        /* mobile */
+        window.addEventListener("touchstart", e => {
+            const t = e.touches[0];
+            pointer.x = t.clientX;
+            pointer.y = t.clientY;
+        }, { passive: true });
+
+        window.addEventListener("touchmove", e => {
+            const t = e.touches[0];
+            pointer.x = t.clientX;
+            pointer.y = t.clientY;
+        }, { passive: true });
+
+        for (let i = 0; i < 140; i++) {
             particles.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
@@ -480,7 +495,7 @@
         function lerp(a, b, t) { return a + (b - a) * t; }
 
         function animate() {
-            time += 0.005;
+            time += 0.004;
 
             const grad = ctx.createLinearGradient(0, 0, 0, h);
             grad.addColorStop(0, "#f97316");
@@ -489,22 +504,22 @@
             ctx.fillRect(0, 0, w, h);
 
             particles.forEach(p => {
-                // gentle wave drift
-                p.vx += Math.cos(time + p.offset) * 0.002;
-                p.vy += Math.sin(time + p.offset) * 0.002;
+                /* base wave drift (stronger than before) */
+                p.vx += Math.cos(time + p.offset) * 0.004;
+                p.vy += Math.sin(time + p.offset) * 0.004;
 
-                // cursor repulsion
-                const dx = p.x - mouse.x;
-                const dy = p.y - mouse.y;
+                /* pointer repulsion */
+                const dx = p.x - pointer.x;
+                const dy = p.y - pointer.y;
                 const d = Math.sqrt(dx * dx + dy * dy);
-                if (d < 120) {
-                    p.vx += dx / d * 0.05;
-                    p.vy += dy / d * 0.05;
+                if (d < 140) {
+                    p.vx += dx / d * 0.06;
+                    p.vy += dy / d * 0.06;
                 }
 
-                // damping
-                p.vx *= 0.97;
-                p.vy *= 0.97;
+                /* damping */
+                p.vx *= 0.96;
+                p.vy *= 0.96;
 
                 p.x += p.vx;
                 p.y += p.vy;
