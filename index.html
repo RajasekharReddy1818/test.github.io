@@ -32,21 +32,34 @@
             z-index: -1;
         }
 
-        header, section, footer, .cart, .overlay {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* HEADER */
+        /* ===== HEADER ===== */
         header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             padding: 22px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(255,255,255,.95);
+            backdrop-filter: blur(6px);
             border-bottom: 2px solid #000;
             border-radius: 0 0 18px 18px;
+            transition: transform .4s ease, opacity .4s ease;
+            /* entrance animation */
+            opacity: 0;
+            transform: translateY(-40px);
         }
+
+            header.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            header.hide {
+                transform: translateY(-120%);
+                opacity: 0;
+            }
 
         /* LOGO */
         .logo {
@@ -59,7 +72,6 @@
                 transform: scale(1.05);
             }
 
-        /* Glow Animation */
         @keyframes logoGlow {
             0% {
                 filter: drop-shadow(0 0 0px rgba(249,115,22,0));
@@ -77,7 +89,15 @@
         .tagline {
             color: var(--orange);
             font-weight: 600;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: .6s ease .3s;
         }
+
+            .tagline.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
         .header-right {
             display: flex;
@@ -97,7 +117,15 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: .6s ease .4s;
         }
+
+            .cart-button.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
             .cart-button svg {
                 width: 22px;
@@ -123,9 +151,17 @@
 
         /* HERO */
         .hero {
-            padding: 120px 20px 140px;
+            padding: 140px 20px;
             text-align: center;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: .8s ease;
         }
+
+            .hero.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
             .hero h2 {
                 font-size: 40px;
@@ -152,7 +188,15 @@
                 text-align: center;
                 font-size: 30px;
                 margin-bottom: 50px;
+                opacity: 0;
+                transform: translateY(40px);
+                transition: .8s ease;
             }
+
+                .products h3.show {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
 
         .grid {
             max-width: 1100px;
@@ -167,11 +211,18 @@
             border-radius: 16px;
             box-shadow: 0 12px 30px rgba(0,0,0,.08);
             overflow: hidden;
-            transition: .25s;
+            transition: .4s;
+            opacity: 0;
+            transform: translateY(50px);
         }
 
+            .card.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
             .card:hover {
-                transform: translateY(-4px);
+                transform: translateY(-6px);
             }
 
             .card img {
@@ -221,7 +272,7 @@
             font-weight: 700;
         }
 
-        /* OVERLAY + CART */
+        /* CART */
         .overlay {
             position: fixed;
             inset: 0;
@@ -284,6 +335,7 @@
             color: #d1d5db;
             text-align: center;
             padding: 30px;
+            margin-top: 80px;
         }
     </style>
 </head>
@@ -292,11 +344,8 @@
 
     <canvas id="bg-canvas"></canvas>
 
-    <header>
-
-        <!-- LOGO REPLACED HERE -->
+    <header id="mainHeader">
         <img src="images/foodhaven.png" class="logo" alt="Food Haven Logo">
-
         <div class="header-right">
             <span class="tagline">Premium Nutrition</span>
             <div class="cart-button" onclick="toggleCart()">
@@ -309,10 +358,7 @@
                 <div class="cart-count" id="cart-count">0</div>
             </div>
         </div>
-
     </header>
-
-    <!-- EVERYTHING BELOW IS UNCHANGED FROM YOUR WORKING VERSION -->
 
     <section class="hero">
         <h2>Fuel Your <span>Health</span> Naturally</h2>
@@ -323,59 +369,15 @@
         <h3>Our Products</h3>
         <div class="grid">
 
-            <!-- same product cards as before -->
+            <div class="card"><img src="images/product1.jpg"><div class="card-body"><h4>Product One</h4><div class="price">₹999</div><div class="controls"><button class="remove" onclick="removeItem('Product One')">−</button><div class="qty" id="qty-Product One">0</div><button class="add" onclick="addItem('Product One',999)">+</button></div></div></div>
 
-            <div class="card">
-                <img src="images/product1.jpg">
-                <div class="card-body">
-                    <h4>Product One</h4>
-                    <div class="price">₹999</div>
-                    <div class="controls">
-                        <button class="remove" onclick="removeItem('Product One')">−</button>
-                        <div class="qty" id="qty-Product One">0</div>
-                        <button class="add" onclick="addItem('Product One',999)">+</button>
-                    </div>
-                </div>
-            </div>
+            <div class="card"><img src="images/product2.jpg"><div class="card-body"><h4>Product Two</h4><div class="price">₹1299</div><div class="controls"><button class="remove" onclick="removeItem('Product Two')">−</button><div class="qty" id="qty-Product Two">0</div><button class="add" onclick="addItem('Product Two',1299)">+</button></div></div></div>
 
-            <div class="card">
-                <img src="images/product2.jpg">
-                <div class="card-body">
-                    <h4>Product Two</h4>
-                    <div class="price">₹1299</div>
-                    <div class="controls">
-                        <button class="remove" onclick="removeItem('Product Two')">−</button>
-                        <div class="qty" id="qty-Product Two">0</div>
-                        <button class="add" onclick="addItem('Product Two',1299)">+</button>
-                    </div>
-                </div>
-            </div>
+            <div class="card"><img src="images/product3.jpg"><div class="card-body"><h4>Product Three</h4><div class="price">₹899</div><div class="controls"><button class="remove" onclick="removeItem('Product Three')">−</button><div class="qty" id="qty-Product Three">0</div><button class="add" onclick="addItem('Product Three',899)">+</button></div></div></div>
 
-            <div class="card">
-                <img src="images/product3.jpg">
-                <div class="card-body">
-                    <h4>Product Three</h4>
-                    <div class="price">₹899</div>
-                    <div class="controls">
-                        <button class="remove" onclick="removeItem('Product Three')">−</button>
-                        <div class="qty" id="qty-Product Three">0</div>
-                        <button class="add" onclick="addItem('Product Three',899)">+</button>
-                    </div>
-                </div>
-            </div>
+            <div class="card"><img src="images/product4.jpg"><div class="card-body"><h4>Product Four</h4><div class="price">₹1499</div><div class="controls"><button class="remove" onclick="removeItem('Product Four')">−</button><div class="qty" id="qty-Product Four">0</div><button class="add" onclick="addItem('Product Four',1499)">+</button></div></div></div>
 
-            <div class="card">
-                <img src="images/product4.jpg">
-                <div class="card-body">
-                    <h4>Product Four</h4>
-                    <div class="price">₹1499</div>
-                    <div class="controls">
-                        <button class="remove" onclick="removeItem('Product Four')">−</button>
-                        <div class="qty" id="qty-Product Four">0</div>
-                        <button class="add" onclick="addItem('Product Four',1499)">+</button>
-                    </div>
-                </div>
-            </div>
+        </div>
     </section>
 
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
@@ -390,7 +392,28 @@
     <footer>© 2026 Food Haven</footer>
 
     <script>
-        /* CART */
+
+        /* ===== HEADER ENTRANCE ===== */
+        window.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("mainHeader").classList.add("show");
+            document.querySelector(".tagline").classList.add("show");
+            document.querySelector(".cart-button").classList.add("show");
+        });
+
+        /* ===== SCROLL REVEAL ===== */
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                }
+            });
+        }, { threshold: .15 });
+
+        document.querySelectorAll(".hero,.products h3,.card").forEach(el => {
+            observer.observe(el);
+        });
+
+        /* ===== CART LOGIC ===== */
         const cart = {};
 
         function addItem(name, price) {
@@ -431,23 +454,32 @@
         }
 
         function toggleCart() {
-            document.getElementById("cart").classList.toggle("open");
-            document.getElementById("overlay").classList.toggle("show");
+            const cartEl = document.getElementById("cart");
+            const overlay = document.getElementById("overlay");
+            const header = document.getElementById("mainHeader");
+
+            cartEl.classList.toggle("open");
+            overlay.classList.toggle("show");
+
+            /* Hide header when cart opens */
+            if (cartEl.classList.contains("open")) {
+                header.classList.add("hide");
+            } else {
+                header.classList.remove("hide");
+            }
         }
 
-        /* WHATSAPP */
+        /* ===== WHATSAPP ===== */
         function generateOrderId() {
-            return "VF-" + Math.floor(100000 + Math.random() * 900000);
+            return "FH-" + Math.floor(100000 + Math.random() * 900000);
         }
 
         function sendWhatsAppOrder() {
             const SELLER_NUMBER = "917989116107";
-
             if (Object.keys(cart).length === 0) {
                 alert("Your cart is empty.");
                 return;
             }
-
             const orderId = generateOrderId();
             let message = `Order ID: ${orderId}\n\nNew Order - Food Haven\n\n`;
             let total = 0;
@@ -460,11 +492,10 @@
             });
 
             message += `\nTotal: ₹${total}\nPlease confirm this order.`;
-
             window.open(`https://wa.me/${SELLER_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
         }
 
-        /* ===== PARTICLE BACKGROUND ===== */
+        /* ===== PARTICLE BACKGROUND (UNCHANGED) ===== */
         const canvas = document.getElementById("bg-canvas");
         const ctx = canvas.getContext("2d");
         let w, h, time = 0;
@@ -504,7 +535,6 @@
 
         function animate() {
             time += 0.004;
-
             const grad = ctx.createLinearGradient(0, 0, 0, h);
             grad.addColorStop(0, "#f97316");
             grad.addColorStop(1, "#ffffff");
@@ -547,6 +577,7 @@
             requestAnimationFrame(animate);
         }
         animate();
+
     </script>
 
 </body>
