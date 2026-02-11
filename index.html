@@ -30,7 +30,6 @@
             z-index: -1;
         }
 
-        /* ===== HEADER ===== */
         header {
             position: sticky;
             top: 0;
@@ -58,7 +57,7 @@
                 opacity: 0;
             }
 
-        /* === NEW: TOP BAR ICON ANIMATION === */
+        /* NEW: top bar animation */
         .logo,
         .tagline,
         .cart-button {
@@ -384,10 +383,8 @@
 
     <div class="cart" id="cart">
         <h3>Your Cart</h3>
-
         <input type="text" id="customerName" placeholder="Customer Name">
         <input type="tel" id="customerPhone" placeholder="Mobile Number">
-
         <div id="cart-items"></div>
         <div class="cart-total">Total: ₹<span id="total">0</span></div>
         <button class="order-btn" onclick="sendWhatsAppOrder()">Send Order on WhatsApp</button>
@@ -401,7 +398,6 @@
             document.getElementById("mainHeader").classList.add("show");
             document.querySelector(".hero").classList.add("show");
 
-            // NEW: trigger top bar animations
             document.querySelector(".logo").classList.add("show");
             document.querySelector(".tagline").classList.add("show");
             document.querySelector(".cart-button").classList.add("show");
@@ -420,7 +416,7 @@
             observer.observe(el);
         });
 
-        /* CART */
+        /* CART LOGIC */
         const cart = {};
 
         function addItem(name, price) {
@@ -499,10 +495,11 @@
             window.open(`https://wa.me/${SELLER_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
         }
 
-        /* PARTICLE BACKGROUND */
+        /* PARTICLE BACKGROUND WITH POINTER INTERACTION */
         const canvas = document.getElementById("bg-canvas");
         const ctx = canvas.getContext("2d");
         let w, h, time = 0;
+        let pointer = { x: -999, y: -999 };
         let particles = [];
 
         function resize() {
@@ -511,6 +508,17 @@
         }
         window.addEventListener("resize", resize);
         resize();
+
+        window.addEventListener("mousemove", e => {
+            pointer.x = e.clientX;
+            pointer.y = e.clientY;
+        });
+
+        window.addEventListener("touchmove", e => {
+            const t = e.touches[0];
+            pointer.x = t.clientX;
+            pointer.y = t.clientY;
+        }, { passive: true });
 
         for (let i = 0; i < 140; i++) {
             particles.push({
@@ -537,8 +545,19 @@
             particles.forEach(p => {
                 p.vx += Math.cos(time + p.offset) * 0.004;
                 p.vy += Math.sin(time + p.offset) * 0.004;
+
+                const dx = p.x - pointer.x;
+                const dy = p.y - pointer.y;
+                const d = Math.sqrt(dx * dx + dy * dy);
+
+                if (d < 140) {
+                    p.vx += dx / d * 0.06;
+                    p.vy += dy / d * 0.06;
+                }
+
                 p.vx *= 0.96;
                 p.vy *= 0.96;
+
                 p.x += p.vx;
                 p.y += p.vy;
 
