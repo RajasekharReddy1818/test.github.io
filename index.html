@@ -441,7 +441,19 @@
             .grid {
                 grid-template-columns: 1fr;
             }
+
+            /* Divider fix */
+            .section-divider {
+                font-size: 20px;
+                margin: 60px auto 40px;
+            }
+
+                .section-divider::before,
+                .section-divider::after {
+                    width: 20%;
+                }
         }
+
 
         footer {
             background: var(--dark);
