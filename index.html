@@ -12,7 +12,6 @@
             --dark: #1f2937;
         }
 
-        /* RESET */
         * {
             margin: 0;
             padding: 0;
@@ -25,7 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* CANVAS BACKGROUND */
         #bg-canvas {
             position: fixed;
             inset: 0;
@@ -46,7 +44,6 @@
             border-bottom: 2px solid #000;
             border-radius: 0 0 18px 18px;
             transition: transform .4s ease, opacity .4s ease;
-            /* entrance animation */
             opacity: 0;
             transform: translateY(-40px);
         }
@@ -61,16 +58,37 @@
                 opacity: 0;
             }
 
-        /* LOGO */
+        /* === NEW: TOP BAR ICON ANIMATION === */
+        .logo,
+        .tagline,
+        .cart-button {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all .6s ease;
+        }
+
+            .logo.show {
+                opacity: 1;
+                transform: translateY(0);
+                transition-delay: .2s;
+            }
+
+            .tagline.show {
+                opacity: 1;
+                transform: translateY(0);
+                transition-delay: .35s;
+            }
+
+            .cart-button.show {
+                opacity: 1;
+                transform: translateY(0);
+                transition-delay: .5s;
+            }
+
         .logo {
             height: 50px;
             animation: logoGlow 3s ease-in-out infinite;
-            transition: transform .3s;
         }
-
-            .logo:hover {
-                transform: scale(1.05);
-            }
 
         @keyframes logoGlow {
             0% {
@@ -86,26 +104,17 @@
             }
         }
 
-        .tagline {
-            color: var(--orange);
-            font-weight: 600;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: .6s ease .3s;
-        }
-
-            .tagline.show {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
         .header-right {
             display: flex;
             align-items: center;
             gap: 16px;
         }
 
-        /* CART BUTTON */
+        .tagline {
+            color: var(--orange);
+            font-weight: 600;
+        }
+
         .cart-button {
             position: relative;
             width: 44px;
@@ -117,15 +126,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: .6s ease .4s;
         }
-
-            .cart-button.show {
-                opacity: 1;
-                transform: translateY(0);
-            }
 
             .cart-button svg {
                 width: 22px;
@@ -149,9 +150,8 @@
             justify-content: center;
         }
 
-        /* HERO */
         .hero {
-            padding: 140px 20px;
+            padding: 160px 20px 140px;
             text-align: center;
             opacity: 0;
             transform: translateY(40px);
@@ -172,14 +172,6 @@
                     color: #823600;
                 }
 
-            .hero p {
-                max-width: 620px;
-                margin: auto;
-                font-size: 18px;
-                color: #4b5563;
-            }
-
-        /* PRODUCTS */
         .products {
             padding: 120px 20px;
         }
@@ -272,7 +264,6 @@
             font-weight: 700;
         }
 
-        /* CART */
         .overlay {
             position: fixed;
             inset: 0;
@@ -299,10 +290,20 @@
             box-shadow: -10px 0 30px rgba(0,0,0,.15);
             transition: .3s;
             z-index: 999;
+            overflow-y: auto;
         }
 
             .cart.open {
                 right: 0;
+            }
+
+            .cart input {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 14px;
             }
 
         .cart-item {
@@ -345,7 +346,7 @@
     <canvas id="bg-canvas"></canvas>
 
     <header id="mainHeader">
-        <img src="images/foodhaven.png" class="logo" alt="Food Haven Logo">
+        <img src="images/foodhaven.png" class="logo">
         <div class="header-right">
             <span class="tagline">Premium Nutrition</span>
             <div class="cart-button" onclick="toggleCart()">
@@ -362,7 +363,6 @@
 
     <section class="hero">
         <h2>Fuel Your <span>Health</span> Naturally</h2>
-        <p>Clean nutrition products crafted for everyday wellbeing.</p>
     </section>
 
     <section class="products">
@@ -384,6 +384,10 @@
 
     <div class="cart" id="cart">
         <h3>Your Cart</h3>
+
+        <input type="text" id="customerName" placeholder="Customer Name">
+        <input type="tel" id="customerPhone" placeholder="Mobile Number">
+
         <div id="cart-items"></div>
         <div class="cart-total">Total: ₹<span id="total">0</span></div>
         <button class="order-btn" onclick="sendWhatsAppOrder()">Send Order on WhatsApp</button>
@@ -393,14 +397,17 @@
 
     <script>
 
-        /* ===== HEADER ENTRANCE ===== */
         window.addEventListener("DOMContentLoaded", () => {
             document.getElementById("mainHeader").classList.add("show");
+            document.querySelector(".hero").classList.add("show");
+
+            // NEW: trigger top bar animations
+            document.querySelector(".logo").classList.add("show");
             document.querySelector(".tagline").classList.add("show");
             document.querySelector(".cart-button").classList.add("show");
         });
 
-        /* ===== SCROLL REVEAL ===== */
+        /* SCROLL REVEAL */
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -409,11 +416,11 @@
             });
         }, { threshold: .15 });
 
-        document.querySelectorAll(".hero,.products h3,.card").forEach(el => {
+        document.querySelectorAll(".products h3,.card").forEach(el => {
             observer.observe(el);
         });
 
-        /* ===== CART LOGIC ===== */
+        /* CART */
         const cart = {};
 
         function addItem(name, price) {
@@ -439,13 +446,7 @@
                 const item = cart[name];
                 count += item.qty;
                 total += item.qty * item.price;
-
-                list.innerHTML += `
-<div class="cart-item">
-<span>${name} × ${item.qty}</span>
-<span>₹${item.qty * item.price}</span>
-</div>`;
-
+                list.innerHTML += `<div class="cart-item"><span>${name} × ${item.qty}</span><span>₹${item.qty * item.price}</span></div>`;
                 document.getElementById("qty-" + name).textContent = item.qty;
             });
 
@@ -461,7 +462,6 @@
             cartEl.classList.toggle("open");
             overlay.classList.toggle("show");
 
-            /* Hide header when cart opens */
             if (cartEl.classList.contains("open")) {
                 header.classList.add("hide");
             } else {
@@ -469,37 +469,40 @@
             }
         }
 
-        /* ===== WHATSAPP ===== */
         function generateOrderId() {
             return "FH-" + Math.floor(100000 + Math.random() * 900000);
         }
 
         function sendWhatsAppOrder() {
+            const name = document.getElementById("customerName").value.trim();
+            const phone = document.getElementById("customerPhone").value.trim();
+
+            if (!name) { alert("Enter customer name."); return; }
+            if (!/^[6-9]\d{9}$/.test(phone)) { alert("Enter valid 10 digit mobile number."); return; }
+            if (Object.keys(cart).length === 0) { alert("Cart is empty."); return; }
+
             const SELLER_NUMBER = "917989116107";
-            if (Object.keys(cart).length === 0) {
-                alert("Your cart is empty.");
-                return;
-            }
             const orderId = generateOrderId();
-            let message = `Order ID: ${orderId}\n\nNew Order - Food Haven\n\n`;
+
+            let message = `Order ID: ${orderId}\n\nCustomer Details:\nName: ${name}\nMobile: ${phone}\n\nOrder:\n`;
             let total = 0;
 
-            Object.keys(cart).forEach(name => {
-                const item = cart[name];
+            Object.keys(cart).forEach(itemName => {
+                const item = cart[itemName];
                 const itemTotal = item.qty * item.price;
                 total += itemTotal;
-                message += `- ${name} x ${item.qty} = ₹${itemTotal}\n`;
+                message += `- ${itemName} x ${item.qty} = ₹${itemTotal}\n`;
             });
 
-            message += `\nTotal: ₹${total}\nPlease confirm this order.`;
+            message += `\nTotal: ₹${total}`;
+
             window.open(`https://wa.me/${SELLER_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
         }
 
-        /* ===== PARTICLE BACKGROUND (UNCHANGED) ===== */
+        /* PARTICLE BACKGROUND */
         const canvas = document.getElementById("bg-canvas");
         const ctx = canvas.getContext("2d");
         let w, h, time = 0;
-        let pointer = { x: -999, y: -999 };
         let particles = [];
 
         function resize() {
@@ -508,17 +511,6 @@
         }
         window.addEventListener("resize", resize);
         resize();
-
-        window.addEventListener("mousemove", e => {
-            pointer.x = e.clientX;
-            pointer.y = e.clientY;
-        });
-
-        window.addEventListener("touchmove", e => {
-            const t = e.touches[0];
-            pointer.x = t.clientX;
-            pointer.y = t.clientY;
-        }, { passive: true });
 
         for (let i = 0; i < 140; i++) {
             particles.push({
@@ -535,6 +527,7 @@
 
         function animate() {
             time += 0.004;
+
             const grad = ctx.createLinearGradient(0, 0, 0, h);
             grad.addColorStop(0, "#f97316");
             grad.addColorStop(1, "#ffffff");
@@ -544,24 +537,10 @@
             particles.forEach(p => {
                 p.vx += Math.cos(time + p.offset) * 0.004;
                 p.vy += Math.sin(time + p.offset) * 0.004;
-
-                const dx = p.x - pointer.x;
-                const dy = p.y - pointer.y;
-                const d = Math.sqrt(dx * dx + dy * dy);
-
-                if (d < 140) {
-                    p.vx += dx / d * 0.06;
-                    p.vy += dy / d * 0.06;
-                }
-
                 p.vx *= 0.96;
                 p.vy *= 0.96;
-
                 p.x += p.vx;
                 p.y += p.vy;
-
-                if (p.x < 0 || p.x > w) p.vx *= -1;
-                if (p.y < 0 || p.y > h) p.vy *= -1;
 
                 const t = p.y / h;
                 const r = Math.round(lerp(255, 249, t));
