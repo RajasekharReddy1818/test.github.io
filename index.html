@@ -45,10 +45,9 @@
             border-radius: 0 0 18px 18px;
             transition: transform .4s ease, opacity .4s ease;
             opacity: 0;
-            transform: translateY(-40px);
+            transform: translateY(-40px) translateZ(0);
             will-change: transform,opacity;
             backface-visibility: hidden;
-            transform: translateY(-40px) translateZ(0);
         }
 
             header.show {
@@ -67,8 +66,6 @@
             opacity: 0;
             transform: translateY(-20px);
             transition: .6s ease;
-            will-change: transform,opacity;
-            backface-visibility: hidden;
         }
 
             .logo.show {
@@ -103,8 +100,6 @@
             opacity: 0;
             transform: translateY(-20px);
             transition: .6s ease .15s;
-            will-change: transform,opacity;
-            backface-visibility: hidden;
         }
 
             .search-container.show {
@@ -161,12 +156,6 @@
                 border-radius: 6px;
             }
 
-        @media(max-width:768px) {
-            .search-input {
-                width: 160px;
-            }
-        }
-
         /* CART */
         .cart-button {
             position: relative;
@@ -182,8 +171,6 @@
             opacity: 0;
             transform: translateY(-20px);
             transition: .6s ease .3s;
-            will-change: transform,opacity;
-            backface-visibility: hidden;
         }
 
             .cart-button.show {
@@ -220,8 +207,6 @@
             opacity: 0;
             transform: translateY(40px);
             transition: .8s ease;
-            will-change: transform,opacity;
-            backface-visibility: hidden;
         }
 
             .hero.show {
@@ -250,8 +235,6 @@
                 opacity: 0;
                 transform: translateY(40px);
                 transition: .8s ease;
-                will-change: transform,opacity;
-                backface-visibility: hidden;
             }
 
                 .products h3.show {
@@ -259,15 +242,44 @@
                     transform: translateY(0);
                 }
 
+        .section-divider {
+            text-align: center;
+            margin: 100px auto 60px;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--dark);
+            position: relative;
+        }
+
+            .section-divider::before,
+            .section-divider::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                width: 35%;
+                height: 2px;
+                background: #e5e7eb;
+            }
+
+            .section-divider::before {
+                left: 0;
+            }
+
+            .section-divider::after {
+                right: 0;
+            }
+
         .grid {
             max-width: 1100px;
             margin: auto;
             display: grid;
             gap: 35px;
-            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            grid-template-columns: repeat(3, 1fr);
         }
 
+
         .card {
+          
             background: #fff;
             border-radius: 16px;
             box-shadow: 0 12px 30px rgba(0,0,0,.08);
@@ -275,8 +287,6 @@
             transition: .4s;
             opacity: 0;
             transform: translateY(50px);
-            will-change: transform,opacity;
-            backface-visibility: hidden;
         }
 
             .card.show {
@@ -340,20 +350,12 @@
         }
 
         @keyframes focusProduct {
-            0% {
-                transform: scale(1);
-            }
-
             50% {
                 transform: scale(1.06);
             }
-
-            100% {
-                transform: scale(1);
-            }
         }
 
-        /* CART + FOOTER unchanged */
+        /* CART PANEL */
         .overlay {
             position: fixed;
             inset: 0;
@@ -420,6 +422,18 @@
             font-weight: 700;
             cursor: pointer;
         }
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
 
         footer {
             background: var(--dark);
@@ -437,13 +451,11 @@
 
     <header id="mainHeader">
         <img src="images/foodhaven.png" class="logo">
-
         <div class="header-right">
             <div class="search-container">
                 <input type="text" class="search-input" id="searchInput" placeholder="Search food heaven...">
                 <div class="search-results" id="searchResults"></div>
             </div>
-
             <div class="cart-button" onclick="toggleCart()">
                 <svg viewBox="0 0 24 24">
                     <path d="M6 6h15l-1.5 9h-12z" />
@@ -462,17 +474,81 @@
 
     <section class="products">
         <h3>Our Crafted Delights</h3>
+
+        <div class="section-divider">Dry Fruits</div>
         <div class="grid">
+            <div class="card" data-name="Almonds">
+                <img src="images/almonds.jpg">
+                <div class="card-body">
+                    <h4>Almonds</h4>
+                    <div class="price">₹1000 / 1000g</div>
+                    <div class="controls">
+                        <button class="remove" onclick="removeItem('Almonds')">−</button>
+                        <div class="qty" id="qty-Almonds">0</div>
+                        <button class="add" onclick="addItem('Almonds',1000)">+</button>
+                    </div>
+                </div>
+            </div>
 
-            <div class="card" data-name="Product One"><img src="images/product1.jpg"><div class="card-body"><h4>Product One</h4><div class="price">₹999</div><div class="controls"><button class="remove" onclick="removeItem('Product One')">−</button><div class="qty" id="qty-Product One">0</div><button class="add" onclick="addItem('Product One',999)">+</button></div></div></div>
-
-            <div class="card" data-name="Product Two"><img src="images/product2.jpg"><div class="card-body"><h4>Product Two</h4><div class="price">₹1299</div><div class="controls"><button class="remove" onclick="removeItem('Product Two')">−</button><div class="qty" id="qty-Product Two">0</div><button class="add" onclick="addItem('Product Two',1299)">+</button></div></div></div>
-
-            <div class="card" data-name="Product Three"><img src="images/product3.jpg"><div class="card-body"><h4>Product Three</h4><div class="price">₹899</div><div class="controls"><button class="remove" onclick="removeItem('Product Three')">−</button><div class="qty" id="qty-Product Three">0</div><button class="add" onclick="addItem('Product Three',899)">+</button></div></div></div>
-
-            <div class="card" data-name="Product Four"><img src="images/product4.jpg"><div class="card-body"><h4>Product Four</h4><div class="price">₹1499</div><div class="controls"><button class="remove" onclick="removeItem('Product Four')">−</button><div class="qty" id="qty-Product Four">0</div><button class="add" onclick="addItem('Product Four',1499)">+</button></div></div></div>
+            <div class="card" data-name="Cashews">
+                <img src="images/cashews.jpg">
+                <div class="card-body">
+                    <h4>Cashews</h4>
+                    <div class="price">₹1000 / 1000g</div>
+                    <div class="controls">
+                        <button class="remove" onclick="removeItem('Cashews')">−</button>
+                        <div class="qty" id="qty-Cashews">0</div>
+                        <button class="add" onclick="addItem('Cashews',850)">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card" data-name="Chocolate coated Cashew">
+                <img src="images/chocolatecashew.jpg">
+                <div class="card-body">
+                    <h4>Chocolate Cashew</h4>
+                    <div class="price">₹1600 / 1000g</div>
+                    <div class="controls">
+                        <button class="remove" onclick="removeItem('Chocolate Cashew')">−</button>
+                        <div class="qty" id="qty-Chocolate Cashew">0</div>
+                        <button class="add" onclick="addItem('Chocolate Cashew',1600)">+</button>
+                    </div>
+                </div>
+            </div>
 
         </div>
+
+        <div class="section-divider">Masalas</div>
+        <div class="grid">
+            <div class="card" data-name="Turmeric">
+                <img src="images/turmeric.jpg">
+                <div class="card-body">
+                    <h4>Turmeric</h4>
+                    <div class="price">₹120 / 100g</div>
+                    <div class="controls">
+                        <button class="remove" onclick="removeItem('Turmeric')">−</button>
+                        <div class="qty" id="qty-Turmeric">0</div>
+                        <button class="add" onclick="addItem('Turmeric',120)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider">Achars</div>
+        <div class="grid">
+            <div class="card" data-name="Mango Pickle">
+                <img src="images/mangopickle.jpg">
+                <div class="card-body">
+                    <h4>Mango Pickle</h4>
+                    <div class="price">₹250 / 100g</div>
+                    <div class="controls">
+                        <button class="remove" onclick="removeItem('Mango Pickle')">−</button>
+                        <div class="qty" id="qty-Mango Pickle">0</div>
+                        <button class="add" onclick="addItem('Mango Pickle',250)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
@@ -489,8 +565,6 @@
     <footer>© 2026 Food Haven</footer>
 
     <script>
-
-        /* HEADER LOAD */
         window.onload = function () {
             document.getElementById("mainHeader").classList.add("show");
             document.querySelector(".logo").classList.add("show");
@@ -499,25 +573,16 @@
             document.querySelector(".hero").classList.add("show");
         };
 
-        /* STABLE SCROLL REVEAL (NO EDGE FLICKER) */
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 const ratio = entry.intersectionRatio;
-
-                if (ratio > 0.35) {
-                    entry.target.classList.add("show");
-                }
-                else if (ratio < 0.15) {
-                    entry.target.classList.remove("show");
-                }
+                if (ratio > 0.35) { entry.target.classList.add("show"); }
+                else if (ratio < 0.15) { entry.target.classList.remove("show"); }
             });
-        }, {
-            threshold: [0, 0.15, 0.35, 1]
-        });
+        }, { threshold: [0, 0.15, 0.35, 1] });
 
         document.querySelectorAll(".products h3,.card").forEach(el => observer.observe(el));
 
-        /* SEARCH */
         const searchInput = document.getElementById("searchInput");
         const resultsBox = document.getElementById("searchResults");
         const cards = document.querySelectorAll(".card");
@@ -526,56 +591,82 @@
             const value = this.value.toLowerCase().trim();
             resultsBox.innerHTML = "";
             if (!value) { resultsBox.style.display = "none"; return; }
-
             let matches = [];
             cards.forEach(card => {
                 const name = card.dataset.name.toLowerCase();
                 if (name.includes(value)) { matches.push(card); }
             });
-
             if (matches.length === 0) { resultsBox.style.display = "none"; return; }
-
             matches.forEach(card => {
                 const item = document.createElement("div");
                 item.className = "search-item";
                 item.innerHTML = `<img src="${card.querySelector("img").src}"><span>${card.dataset.name}</span>`;
                 item.onclick = function () {
-
-                    /* CENTER PROPERLY */
                     const y = card.getBoundingClientRect().top + window.pageYOffset - (window.innerHeight / 2) + (card.offsetHeight / 2);
                     window.scrollTo({ top: y, behavior: "smooth" });
-
-                    /* HIGHLIGHT */
                     setTimeout(() => {
                         card.classList.add("highlight");
                         setTimeout(() => card.classList.remove("highlight"), 800);
                     }, 500);
-
                     resultsBox.style.display = "none";
                     searchInput.value = "";
                 };
                 resultsBox.appendChild(item);
             });
-
             resultsBox.style.display = "block";
         });
 
         document.addEventListener("click", function (e) {
-            if (!e.target.closest(".search-container")) {
-                resultsBox.style.display = "none";
-            }
+            if (!e.target.closest(".search-container")) { resultsBox.style.display = "none"; }
         });
 
-       
-
-        /* CART + PARTICLES (UNCHANGED) */
         const cart = {};
         function addItem(name, price) { cart[name] = cart[name] ? { ...cart[name], qty: cart[name].qty + 1 } : { price, qty: 1 }; updateUI(); }
         function removeItem(name) { if (cart[name]) { cart[name].qty--; if (cart[name].qty <= 0) delete cart[name]; updateUI(); } }
-        function updateUI() { let count = 0, total = 0; const list = document.getElementById("cart-items"); list.innerHTML = ""; document.querySelectorAll(".qty").forEach(q => q.textContent = 0); Object.keys(cart).forEach(name => { const item = cart[name]; count += item.qty; total += item.qty * item.price; list.innerHTML += `<div class="cart-item"><span>${name} × ${item.qty}</span><span>₹${item.qty * item.price}</span></div>`; document.getElementById("qty-" + name).textContent = item.qty; }); document.getElementById("cart-count").textContent = count; document.getElementById("total").textContent = total; }
-        function toggleCart() { const cartEl = document.getElementById("cart"); const overlay = document.getElementById("overlay"); const header = document.getElementById("mainHeader"); cartEl.classList.toggle("open"); overlay.classList.toggle("show"); if (cartEl.classList.contains("open")) { header.classList.add("hide"); } else { header.classList.remove("hide"); } }
+        function updateUI() {
+            let count = 0, total = 0;
+            const list = document.getElementById("cart-items");
+            list.innerHTML = "";
+            document.querySelectorAll(".qty").forEach(q => q.textContent = 0);
+            Object.keys(cart).forEach(name => {
+                const item = cart[name];
+                count += item.qty;
+                total += item.qty * item.price;
+                list.innerHTML += `<div class="cart-item"><span>${name} × ${item.qty}</span><span>₹${item.qty * item.price}</span></div>`;
+                document.getElementById("qty-" + name).textContent = item.qty;
+            });
+            document.getElementById("cart-count").textContent = count;
+            document.getElementById("total").textContent = total;
+        }
+        function toggleCart() {
+            const cartEl = document.getElementById("cart");
+            const overlay = document.getElementById("overlay");
+            const header = document.getElementById("mainHeader");
+            cartEl.classList.toggle("open");
+            overlay.classList.toggle("show");
+            if (cartEl.classList.contains("open")) { header.classList.add("hide"); }
+            else { header.classList.remove("hide"); }
+        }
         function generateOrderId() { return "FH-" + Math.floor(100000 + Math.random() * 900000); }
-        function sendWhatsAppOrder() { const name = document.getElementById("customerName").value.trim(); const phone = document.getElementById("customerPhone").value.trim(); if (!name) { alert("Enter customer name."); return; } if (!/^[6-9]\d{9}$/.test(phone)) { alert("Enter valid 10 digit mobile number."); return; } if (Object.keys(cart).length === 0) { alert("Cart is empty."); return; } const SELLER_NUMBER = "917989116107"; const orderId = generateOrderId(); let message = `Order ID: ${orderId}\n\nCustomer Details:\nName: ${name}\nMobile: ${phone}\n\nOrder:\n`; let total = 0; Object.keys(cart).forEach(itemName => { const item = cart[itemName]; const itemTotal = item.qty * item.price; total += itemTotal; message += `- ${itemName} x ${item.qty} = ₹${itemTotal}\n`; }); message += `\nTotal: ₹${total}`; window.open(`https://wa.me/${SELLER_NUMBER}?text=${encodeURIComponent(message)}`, "_blank"); }
+        function sendWhatsAppOrder() {
+            const name = document.getElementById("customerName").value.trim();
+            const phone = document.getElementById("customerPhone").value.trim();
+            if (!name) { alert("Enter customer name."); return; }
+            if (!/^[6-9]\d{9}$/.test(phone)) { alert("Enter valid 10 digit mobile number."); return; }
+            if (Object.keys(cart).length === 0) { alert("Cart is empty."); return; }
+            const SELLER_NUMBER = "917989116107";
+            const orderId = generateOrderId();
+            let message = `Order ID: ${orderId}\n\nCustomer Details:\nName: ${name}\nMobile: ${phone}\n\nOrder:\n`;
+            let total = 0;
+            Object.keys(cart).forEach(itemName => {
+                const item = cart[itemName];
+                const itemTotal = item.qty * item.price;
+                total += itemTotal;
+                message += `- ${itemName} x ${item.qty} = ₹${itemTotal}\n`;
+            });
+            message += `\nTotal: ₹${total}`;
+            window.open(`https://wa.me/${SELLER_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
+        }
 
         /* PARTICLES */
         const canvas = document.getElementById("bg-canvas");
@@ -587,12 +678,39 @@
         window.addEventListener("resize", resize);
         resize();
         window.addEventListener("mousemove", e => { pointer.x = e.clientX; pointer.y = e.clientY; });
-        window.addEventListener("touchmove", e => { const t = e.touches[0]; pointer.x = t.clientX; pointer.y = t.clientY; }, { passive: true });
-        for (let i = 0; i < 140; i++) { particles.push({ x: Math.random() * w, y: Math.random() * h, vx: 0, vy: 0, r: Math.random() * 2 + 1, offset: Math.random() * Math.PI * 2 }); }
+        for (let i = 0; i < 140; i++) {
+            particles.push({ x: Math.random() * w, y: Math.random() * h, vx: 0, vy: 0, r: Math.random() * 2 + 1, offset: Math.random() * Math.PI * 2 });
+        }
         function lerp(a, b, t) { return a + (b - a) * t; }
-        function animate() { time += 0.004; const grad = ctx.createLinearGradient(0, 0, 0, h); grad.addColorStop(0, "#de5500"); grad.addColorStop(1, "#ffffff"); ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h); particles.forEach(p => { p.vx += Math.cos(time + p.offset) * 0.004; p.vy += Math.sin(time + p.offset) * 0.004; const dx = p.x - pointer.x; const dy = p.y - pointer.y; const d = Math.sqrt(dx * dx + dy * dy); if (d < 140) { p.vx += dx / d * 0.06; p.vy += dy / d * 0.06; } p.vx *= 0.96; p.vy *= 0.96; p.x += p.vx; p.y += p.vy; const t = p.y / h; const r = Math.round(lerp(255, 249, t)); const g = Math.round(lerp(255, 115, t)); const b = Math.round(lerp(255, 22, t)); ctx.fillStyle = `rgba(${r},${g},${b},0.65)`; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(animate); }
+        function animate() {
+            time += 0.004;
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, "#de5500");
+            grad.addColorStop(1, "#ffffff");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+            particles.forEach(p => {
+                p.vx += Math.cos(time + p.offset) * 0.004;
+                p.vy += Math.sin(time + p.offset) * 0.004;
+                const dx = p.x - pointer.x;
+                const dy = p.y - pointer.y;
+                const d = Math.sqrt(dx * dx + dy * dy);
+                if (d < 140) { p.vx += dx / d * 0.06; p.vy += dy / d * 0.06; }
+                p.vx *= 0.96; p.vy *= 0.96;
+                p.x += p.vx; p.y += p.vy;
+                const t = p.y / h;
+                const r = Math.round(lerp(255, 249, t));
+                const g = Math.round(lerp(255, 115, t));
+                const b = Math.round(lerp(255, 22, t));
+                ctx.fillStyle = `rgba(${r},${g},${b},0.65)`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
         animate();
-
     </script>
+
 </body>
 </html>
