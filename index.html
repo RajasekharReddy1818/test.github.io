@@ -46,15 +46,18 @@
             transition: transform .4s ease, opacity .4s ease;
             opacity: 0;
             transform: translateY(-40px);
+            will-change: transform,opacity;
+            backface-visibility: hidden;
+            transform: translateY(-40px) translateZ(0);
         }
 
             header.show {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) translateZ(0);
             }
 
             header.hide {
-                transform: translateY(-120%);
+                transform: translateY(-120%) translateZ(0);
                 opacity: 0;
             }
 
@@ -64,6 +67,8 @@
             opacity: 0;
             transform: translateY(-20px);
             transition: .6s ease;
+            will-change: transform,opacity;
+            backface-visibility: hidden;
         }
 
             .logo.show {
@@ -98,6 +103,8 @@
             opacity: 0;
             transform: translateY(-20px);
             transition: .6s ease .15s;
+            will-change: transform,opacity;
+            backface-visibility: hidden;
         }
 
             .search-container.show {
@@ -175,6 +182,8 @@
             opacity: 0;
             transform: translateY(-20px);
             transition: .6s ease .3s;
+            will-change: transform,opacity;
+            backface-visibility: hidden;
         }
 
             .cart-button.show {
@@ -211,6 +220,8 @@
             opacity: 0;
             transform: translateY(40px);
             transition: .8s ease;
+            will-change: transform,opacity;
+            backface-visibility: hidden;
         }
 
             .hero.show {
@@ -239,6 +250,8 @@
                 opacity: 0;
                 transform: translateY(40px);
                 transition: .8s ease;
+                will-change: transform,opacity;
+                backface-visibility: hidden;
             }
 
                 .products h3.show {
@@ -262,6 +275,8 @@
             transition: .4s;
             opacity: 0;
             transform: translateY(50px);
+            will-change: transform,opacity;
+            backface-visibility: hidden;
         }
 
             .card.show {
@@ -320,7 +335,6 @@
             font-weight: 700;
         }
 
-        /* HIGHLIGHT ANIMATION */
         .card.highlight {
             animation: focusProduct 0.8s ease;
         }
@@ -328,17 +342,14 @@
         @keyframes focusProduct {
             0% {
                 transform: scale(1);
-                box-shadow: 0 12px 30px rgba(0,0,0,.08);
             }
 
             50% {
                 transform: scale(1.06);
-                box-shadow: 0 20px 50px rgba(249,115,22,.35);
             }
 
             100% {
                 transform: scale(1);
-                box-shadow: 0 12px 30px rgba(0,0,0,.08);
             }
         }
 
@@ -488,6 +499,19 @@
             document.querySelector(".hero").classList.add("show");
         };
 
+        /* STABLE SCROLL OBSERVER */
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                } else {
+                    entry.target.classList.remove("show");
+                }
+            });
+        }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
+
+        document.querySelectorAll(".products h3,.card").forEach(el => observer.observe(el));
+
         /* SEARCH */
         const searchInput = document.getElementById("searchInput");
         const resultsBox = document.getElementById("searchResults");
@@ -537,17 +561,7 @@
             }
         });
 
-        /* Scroll reveal */
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("show");
-                } else {
-                    entry.target.classList.remove("show");
-                }
-            });
-        }, { threshold: .15 });
-        document.querySelectorAll(".products h3,.card").forEach(el => observer.observe(el));
+       
 
         /* CART + PARTICLES (UNCHANGED) */
         const cart = {};
