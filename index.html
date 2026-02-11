@@ -30,6 +30,7 @@
             z-index: -1;
         }
 
+        /* ===== HEADER ===== */
         header {
             position: sticky;
             top: 0;
@@ -57,37 +58,18 @@
                 opacity: 0;
             }
 
-        /* NEW: top bar animation */
-        .logo,
-        .tagline,
-        .cart-button {
+        .logo {
+            height: 50px;
+            animation: logoGlow 3s ease-in-out infinite;
             opacity: 0;
             transform: translateY(-20px);
-            transition: all .6s ease;
+            transition: .6s ease;
         }
 
             .logo.show {
                 opacity: 1;
                 transform: translateY(0);
-                transition-delay: .2s;
             }
-
-            .tagline.show {
-                opacity: 1;
-                transform: translateY(0);
-                transition-delay: .35s;
-            }
-
-            .cart-button.show {
-                opacity: 1;
-                transform: translateY(0);
-                transition-delay: .5s;
-            }
-
-        .logo {
-            height: 50px;
-            animation: logoGlow 3s ease-in-out infinite;
-        }
 
         @keyframes logoGlow {
             0% {
@@ -112,7 +94,15 @@
         .tagline {
             color: var(--orange);
             font-weight: 600;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: .6s ease .15s;
         }
+
+            .tagline.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
         .cart-button {
             position: relative;
@@ -125,7 +115,15 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: .6s ease .3s;
         }
+
+            .cart-button.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
             .cart-button svg {
                 width: 22px;
@@ -149,6 +147,7 @@
             justify-content: center;
         }
 
+        /* HERO */
         .hero {
             padding: 160px 20px 140px;
             text-align: center;
@@ -171,6 +170,7 @@
                     color: #823600;
                 }
 
+        /* PRODUCTS */
         .products {
             padding: 120px 20px;
         }
@@ -263,6 +263,7 @@
             font-weight: 700;
         }
 
+        /* CART */
         .overlay {
             position: fixed;
             inset: 0;
@@ -394,20 +395,22 @@
 
     <script>
 
-        window.addEventListener("DOMContentLoaded", () => {
+        /* FIX 1: MOBILE SAFE HEADER + HERO ANIMATION */
+        window.onload = function () {
             document.getElementById("mainHeader").classList.add("show");
-            document.querySelector(".hero").classList.add("show");
-
             document.querySelector(".logo").classList.add("show");
             document.querySelector(".tagline").classList.add("show");
             document.querySelector(".cart-button").classList.add("show");
-        });
+            document.querySelector(".hero").classList.add("show");
+        };
 
-        /* SCROLL REVEAL */
+        /* FIX 2: FADE IN & OUT ON SCROLL */
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add("show");
+                } else {
+                    entry.target.classList.remove("show");
                 }
             });
         }, { threshold: .15 });
@@ -416,7 +419,9 @@
             observer.observe(el);
         });
 
-        /* CART LOGIC */
+        /* ===== REST OF YOUR SCRIPT UNCHANGED ===== */
+
+        /* CART */
         const cart = {};
 
         function addItem(name, price) {
@@ -495,7 +500,7 @@
             window.open(`https://wa.me/${SELLER_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
         }
 
-        /* PARTICLE BACKGROUND WITH POINTER INTERACTION */
+        /* PARTICLES */
         const canvas = document.getElementById("bg-canvas");
         const ctx = canvas.getContext("2d");
         let w, h, time = 0;
@@ -577,6 +582,5 @@
         animate();
 
     </script>
-
 </body>
 </html>
