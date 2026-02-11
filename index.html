@@ -92,7 +92,7 @@
             position: relative;
         }
 
-        /* ===== SEARCH BOX ===== */
+        /* SEARCH */
         .search-container {
             position: relative;
             opacity: 0;
@@ -320,7 +320,29 @@
             font-weight: 700;
         }
 
-        /* CART + FOOTER UNCHANGED */
+        /* HIGHLIGHT ANIMATION */
+        .card.highlight {
+            animation: focusProduct 0.8s ease;
+        }
+
+        @keyframes focusProduct {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 12px 30px rgba(0,0,0,.08);
+            }
+
+            50% {
+                transform: scale(1.06);
+                box-shadow: 0 20px 50px rgba(249,115,22,.35);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 12px 30px rgba(0,0,0,.08);
+            }
+        }
+
+        /* CART + FOOTER unchanged */
         .overlay {
             position: fixed;
             inset: 0;
@@ -406,7 +428,6 @@
         <img src="images/foodhaven.png" class="logo">
 
         <div class="header-right">
-
             <div class="search-container">
                 <input type="text" class="search-input" id="searchInput" placeholder="Search food heaven...">
                 <div class="search-results" id="searchResults"></div>
@@ -421,7 +442,6 @@
                 </svg>
                 <div class="cart-count" id="cart-count">0</div>
             </div>
-
         </div>
     </header>
 
@@ -459,7 +479,7 @@
 
     <script>
 
-        /* HEADER ANIMATION */
+        /* HEADER LOAD */
         window.onload = function () {
             document.getElementById("mainHeader").classList.add("show");
             document.querySelector(".logo").classList.add("show");
@@ -468,7 +488,7 @@
             document.querySelector(".hero").classList.add("show");
         };
 
-        /* SEARCH WITH SUGGESTIONS */
+        /* SEARCH */
         const searchInput = document.getElementById("searchInput");
         const resultsBox = document.getElementById("searchResults");
         const cards = document.querySelectorAll(".card");
@@ -476,30 +496,32 @@
         searchInput.addEventListener("input", function () {
             const value = this.value.toLowerCase().trim();
             resultsBox.innerHTML = "";
-            if (!value) {
-                resultsBox.style.display = "none";
-                return;
-            }
+            if (!value) { resultsBox.style.display = "none"; return; }
 
             let matches = [];
             cards.forEach(card => {
                 const name = card.dataset.name.toLowerCase();
-                if (name.includes(value)) {
-                    matches.push(card);
-                }
+                if (name.includes(value)) { matches.push(card); }
             });
 
-            if (matches.length === 0) {
-                resultsBox.style.display = "none";
-                return;
-            }
+            if (matches.length === 0) { resultsBox.style.display = "none"; return; }
 
             matches.forEach(card => {
                 const item = document.createElement("div");
                 item.className = "search-item";
                 item.innerHTML = `<img src="${card.querySelector("img").src}"><span>${card.dataset.name}</span>`;
                 item.onclick = function () {
-                    card.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                    /* CENTER PROPERLY */
+                    const y = card.getBoundingClientRect().top + window.pageYOffset - (window.innerHeight / 2) + (card.offsetHeight / 2);
+                    window.scrollTo({ top: y, behavior: "smooth" });
+
+                    /* HIGHLIGHT */
+                    setTimeout(() => {
+                        card.classList.add("highlight");
+                        setTimeout(() => card.classList.remove("highlight"), 800);
+                    }, 500);
+
                     resultsBox.style.display = "none";
                     searchInput.value = "";
                 };
@@ -509,16 +531,13 @@
             resultsBox.style.display = "block";
         });
 
-        /* CLICK OUTSIDE CLOSE */
         document.addEventListener("click", function (e) {
             if (!e.target.closest(".search-container")) {
                 resultsBox.style.display = "none";
             }
         });
 
-        /* ==== EVERYTHING ELSE UNCHANGED (CART + PARTICLES + ANIMATION) ==== */
-
-        /* SCROLL FADE */
+        /* Scroll reveal */
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -530,7 +549,7 @@
         }, { threshold: .15 });
         document.querySelectorAll(".products h3,.card").forEach(el => observer.observe(el));
 
-        /* CART */
+        /* CART + PARTICLES (UNCHANGED) */
         const cart = {};
         function addItem(name, price) { cart[name] = cart[name] ? { ...cart[name], qty: cart[name].qty + 1 } : { price, qty: 1 }; updateUI(); }
         function removeItem(name) { if (cart[name]) { cart[name].qty--; if (cart[name].qty <= 0) delete cart[name]; updateUI(); } }
