@@ -319,7 +319,7 @@
                 content: "";
                 position: absolute;
                 top: 50%;
-                width: 35%;
+                width: 25%;
                 height: 2px;
                 background: #e5e7eb;
             }
@@ -1027,7 +1027,9 @@
             const searchToggle = document.querySelector(".search-toggle");
             searchToggle.addEventListener("click", function () {
                 searchWrapper.classList.toggle("active");
-                header.classList.toggle("search-active");
+                document.querySelector(".header-right")
+                    .classList.toggle("search-active");
+
 
                 if (searchWrapper.classList.contains("active")) {
                     searchInput.focus();
@@ -1037,7 +1039,9 @@
 
             searchInput.addEventListener("blur", function () {
                 searchWrapper.classList.remove("active");
-                header.classList.remove("search-active");
+                document.querySelector(".header-right")
+                    .classList.remove("search-active");
+
             });
 
 
