@@ -624,11 +624,12 @@
                     <div class="price">₹1600 / 1000g</div>
                     <div class="controls">
                         <button class="remove" onclick="removeItem('Chocolate Cashew')">−</button>
-                        <div class="qty" id="qty-Chocolate Cashew">0</div>
+                        <div class="qty" id="qty-ChocolateCashew">0</div>
                         <button class="add" onclick="addItem('Chocolate Cashew',1600)">+</button>
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Kishmish">
                 <img src="images/kishmish.jpg">
                 <div class="card-body">
@@ -641,6 +642,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Salted Almonds">
                 <img src="images/saltedalmonds.jpg">
                 <div class="card-body">
@@ -648,11 +650,12 @@
                     <div class="price">₹1200 / 1000g</div>
                     <div class="controls">
                         <button class="remove" onclick="removeItem('Salted Almonds')">−</button>
-                        <div class="qty" id="qty-Salted Almonds">0</div>
+                        <div class="qty" id="qty-SaltedAlmonds">0</div>
                         <button class="add" onclick="addItem('Salted Almonds',1200)">+</button>
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Chocolate Kishmish">
                 <img src="images/chocolatekishmish.jpg">
                 <div class="card-body">
@@ -660,11 +663,12 @@
                     <div class="price">₹1100 / 1000g</div>
                     <div class="controls">
                         <button class="remove" onclick="removeItem('Chocolate Kishmish')">−</button>
-                        <div class="qty" id="qty-Chocolate Kishmish">0</div>
+                        <div class="qty" id="qty-ChocolateKishmish">0</div>
                         <button class="add" onclick="addItem('Chocolate Kishmish',1100)">+</button>
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Dates">
                 <img src="images/dates.jpg">
                 <div class="card-body">
@@ -677,7 +681,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="section-divider">Masalas</div>
@@ -694,6 +697,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Coriander Powder">
                 <img src="images/corianderpowder.jpg">
                 <div class="card-body">
@@ -701,11 +705,12 @@
                     <div class="price">₹28 / 100g</div>
                     <div class="controls">
                         <button class="remove" onclick="removeItem('Coriander Powder')">−</button>
-                        <div class="qty" id="qty-Coriander Powder">0</div>
+                        <div class="qty" id="qty-CorianderPowder">0</div>
                         <button class="add" onclick="addItem('Coriander Powder',28)">+</button>
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Red Chilli">
                 <img src="images/redchilli.jpg">
                 <div class="card-body">
@@ -718,6 +723,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Jeera Powder">
                 <img src="images/jeerapowder.jpg">
                 <div class="card-body">
@@ -730,6 +736,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Black Pepper">
                 <img src="images/blackpepper.jpg">
                 <div class="card-body">
@@ -742,6 +749,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card" data-name="Garam Masala">
                 <img src="images/garammasala.jpg">
                 <div class="card-body">
@@ -754,8 +762,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
 
         <div class="section-divider">Achars</div>
@@ -767,12 +773,13 @@
                     <div class="price">₹300 / 1000g</div>
                     <div class="controls">
                         <button class="remove" onclick="removeItem('Mango Pickle')">−</button>
-                        <div class="qty" id="qty-Mango Pickle">0</div>
+                        <div class="qty" id="qty-MangoPickle">0</div>
                         <button class="add" onclick="addItem('Mango Pickle',300)">+</button>
                     </div>
                 </div>
             </div>
         </div>
+
 
     </section>
 
@@ -874,7 +881,13 @@
                 count += item.qty;
                 total += item.qty * item.price;
                 list.innerHTML += `<div class="cart-item"><span>${name} × ${item.qty}</span><span>₹${item.qty * item.price}</span></div>`;
-                document.getElementById("qty-" + name).textContent = item.qty;
+                const qtyEl = document.getElementById("qty-" + name.replace(/\s+/g, ""));
+                if (qtyEl) {
+                    qtyEl.textContent = item.qty;
+                }
+
+
+
             });
             document.getElementById("cart-count").textContent = count;
             document.getElementById("total").textContent = total;
