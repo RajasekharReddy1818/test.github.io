@@ -539,36 +539,39 @@
             }
 
             .header-right {
-                gap: 6px;
+                gap: 8px;
             }
 
-            .search-input {
-                display: none;
+            /* Show magnifying glass */
+            .search-toggle {
+                display: flex;
             }
 
-
-            .about-link {
-                transition: transform .3s ease;
-            }
-
-            .header-right.search-active .about-link {
-                transform: translateX(-50px);
-            }
-           
-
-
+            /* Hide search container by default */
             .search-container {
                 display: none;
+            }
+
+            /* When active, show full search */
+            .search-wrapper.active .search-container {
+                display: block;
                 position: absolute;
-                top: 50px;
+                top: 55px;
                 right: 0;
                 width: 200px;
                 background: white;
             }
 
-            .search-wrapper.active .search-container {
-                display: block;
+            /* Remove transform trick */
+            .about-link {
+                transform: none !important;
             }
+            .search-container {
+                box-shadow: 0 10px 20px rgba(0,0,0,.08);
+                border-radius: 12px;
+                padding: 8px;
+            }
+
 
             .products {
                 padding: 100px 15px;
@@ -577,19 +580,8 @@
             .grid {
                 grid-template-columns: 1fr;
             }
-            .search-toggle {
-                display: flex;
-            }
-
-            .search-container {
-                display: none;
-            }
-
-            .search-wrapper.active .search-container {
-                display: block;
-            }
-
         }
+
 
         /* ABOUT LINK */
         .about-link {
