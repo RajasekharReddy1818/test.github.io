@@ -823,7 +823,23 @@
         <button class="order-btn" onclick="sendWhatsAppOrder()">Send Order on WhatsApp</button>
     </div>
 
-    <footer>© 2026 Food Haven</footer>
+    <footer class="wholesale-footer">
+        <div class="footer-content">
+            <h3>Wholesale Orders</h3>
+            <p>Interested in bulk purchases? Contact us directly for wholesale pricing and large quantity orders.</p>
+
+            <div class="footer-contacts">
+                <a href="https://wa.me/917989116107" target="_blank" class="footer-link">
+                    📱 WhatsApp: +91 79891 16107
+                </a>
+
+                <a href="mailto:rajareddy3555@gmail.com" class="footer-link">
+                    ✉ Email: rajareddy3555@gmail.com
+                </a>
+            </div>
+        </div>
+    </footer>
+
 
     <script>
 
@@ -887,7 +903,7 @@
                     item.className = "search-item";
                     item.innerHTML =
                         `<img src="${card.querySelector("img").src}">
-                         <span>${card.dataset.name}</span>`;
+                             <span>${card.dataset.name}</span>`;
 
                     item.onclick = function () {
                         const y = card.getBoundingClientRect().top +
@@ -961,15 +977,15 @@
 
                     html += `
 <div class="cart-item">
-            <div class="cart-left">
-                <div>${name}</div>
-                <div class="cart-controls">
-                    <button onclick="removeItem('${name}')">−</button>
-                    <span>${item.qty}</span>
-                    <button onclick="addItem('${name}', ${item.price})">+</button>
+                <div class="cart-left">
+                    <div>${name}</div>
+                    <div class="cart-controls">
+                        <button onclick="removeItem('${name}')">−</button>
+                        <span>${item.qty}</span>
+                        <button onclick="addItem('${name}', ${item.price})">+</button>
+                    </div>
                 </div>
-            </div>
-            <div>₹${itemTotal}</div>
+                <div>₹${itemTotal}</div>
 </div>
 `;
 
@@ -1099,9 +1115,9 @@ Order:
 
                     ctx.fillStyle =
                         `rgba(${Math.round(lerp(255, 249, t))},
-                               ${Math.round(lerp(255, 115, t))},
-                               ${Math.round(lerp(255, 22, t))},
-                               0.65)`;
+                                   ${Math.round(lerp(255, 115, t))},
+                                   ${Math.round(lerp(255, 22, t))},
+                                   0.65)`;
 
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
