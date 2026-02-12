@@ -319,7 +319,7 @@
                 content: "";
                 position: absolute;
                 top: 50%;
-                width: 25%;
+                width: 35%;
                 height: 2px;
                 background: #e5e7eb;
             }
@@ -532,68 +532,19 @@
             cursor: pointer;
         }
 
-        /* SEARCH WRAPPER */
-        .search-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-toggle {
-            display: none;
-            background: #fff;
-            border: 2px solid #545454;
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-
-
-
-            .search-toggle svg {
-                width: 18px;
-                height: 18px;
-                stroke: var(--dark);
-            }
-
+        /* MOBILE FIX */
         @media(max-width:600px) {
 
             header {
                 padding: 18px 15px;
             }
 
-            .header-right {
-                gap: 8px;
-                align-items: center;
-            }
-
-            /* Show magnifying glass */
-            .search-toggle {
-                display: flex;
-            }
-
-            /* Hide search box by default */
-            .search-container {
-                display: none;
-                opacity: 1;
-                transform: none;
-                position: static;
+            .search-input {
                 width: 140px;
             }
 
-            /* When active, show inline */
-            .search-wrapper.active .search-container {
-                display: block;
-            }
-
-            /* Move About Us slightly left when search opens */
-            .header-right.search-active .about-link {
-                transform: translateX(-40px);
-                transition: transform .3s ease;
+            .header-right {
+                gap: 10px;
             }
 
             .products {
@@ -603,26 +554,18 @@
             .grid {
                 grid-template-columns: 1fr;
             }
-        }
 
-
-
-        /* ABOUT LINK */
-        .about-link {
-            font-weight: 600;
-            text-decoration: none;
-            color: var(--dark);
-            cursor: pointer;
-        }
-
-            .about-link:hover {
-                color: var(--orange);
+            /* Divider fix */
+            .section-divider {
+                font-size: 20px;
+                margin: 60px auto 40px;
             }
 
-
-
-       
-
+                .section-divider::before,
+                .section-divider::after {
+                    width: 20%;
+                }
+        }
 
 
         footer {
@@ -642,24 +585,10 @@
     <header id="mainHeader">
         <img src="images/foodhaven.png" class="logo">
         <div class="header-right">
-
-            <a href="#" class="about-link">About Us</a>
-
-            <div class="search-wrapper">
-                <button class="search-toggle" aria-label="Search">
-                    <svg viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none" />
-                        <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" />
-                    </svg>
-                </button>
-
-
-                <div class="search-container">
-                    <input type="text" class="search-input" id="searchInput" placeholder="Search food heaven...">
-                    <div class="search-results" id="searchResults"></div>
-                </div>
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search food heaven...">
+                <div class="search-results" id="searchResults"></div>
             </div>
-
             <div class="cart-button" onclick="toggleCart()">
                 <svg viewBox="0 0 24 24">
                     <path d="M6 6h15l-1.5 9h-12z" />
@@ -670,7 +599,7 @@
                 <div class="cart-count" id="cart-count">0</div>
             </div>
         </div>
-</header>
+    </header>
     <section class="hero">
         <h1 class="hero-title">Food Haven</h1>
         <p class="hero-tagline">Flavors That Feel Like Home</p>
@@ -894,7 +823,6 @@
         <button class="order-btn" onclick="sendWhatsAppOrder()">Send Order on WhatsApp</button>
     </div>
 
-
     <footer class="wholesale-footer">
         <div class="footer-content">
             <h3>Wholesale Orders</h3>
@@ -1012,29 +940,6 @@
                 if (!e.target.closest(".search-container"))
                     resultsBox.style.display = "none";
             });
-            /* ================= MOBILE SEARCH TOGGLE ================= */
-
-            const searchWrapper = document.querySelector(".search-wrapper");
-            const searchToggle = document.querySelector(".search-toggle");
-            searchToggle.addEventListener("click", function () {
-                searchWrapper.classList.toggle("active");
-                document.querySelector(".header-right")
-                    .classList.toggle("search-active");
-
-                if (searchWrapper.classList.contains("active")) {
-                    searchInput.focus();
-                }
-            });
-
-
-
-            searchInput.addEventListener("blur", function () {
-                searchWrapper.classList.remove("active");
-                document.querySelector(".header-right")
-                    .classList.remove("search-active");
-
-            });
-
 
 
             /* ================= CART ================= */
