@@ -519,6 +519,68 @@
             font-weight: 700;
             color: var(--orange);
         }
+        /* ABOUT BUTTON */
+        .about-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #fff;
+            border: 3px solid #545454;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: .6s ease .45s;
+        }
+
+            .about-button.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .about-button svg {
+                width: 20px;
+                color: var(--dark);
+            }
+
+        /* ABOUT PANEL */
+        .about-panel {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100%;
+            background: #fff;
+            padding: 30px;
+            box-shadow: 10px 0 30px rgba(0,0,0,.15);
+            transition: .3s ease;
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+            .about-panel.open {
+                left: 0;
+            }
+
+            .about-panel h2 {
+                margin-bottom: 15px;
+                color: var(--dark);
+            }
+
+            .about-panel p {
+                line-height: 1.6;
+                margin-bottom: 15px;
+                color: #555;
+            }
+
+        @media(max-width:600px) {
+            .about-panel {
+                width: 100%;
+            }
+        }
+
 
         .order-btn {
             margin-top: 20px;
@@ -598,6 +660,14 @@
                 </svg>
                 <div class="cart-count" id="cart-count">0</div>
             </div>
+            <div class="about-button" onclick="toggleAbout()">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
+                    <line x1="12" y1="10" x2="12" y2="16" stroke="currentColor" stroke-width="2" />
+                    <circle cx="12" cy="7" r="1" fill="currentColor" />
+                </svg>
+            </div>
+
         </div>
     </header>
     <section class="hero">
@@ -810,7 +880,8 @@
 
     </section>
 
-    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="overlay" id="overlay" onclick="closePanels()"></div>
+
 
     <div class="cart" id="cart">
         <h3>Your Cart</h3>
@@ -822,6 +893,31 @@
         <div class="cart-total">Total: ₹<span id="total">0</span></div>
         <button class="order-btn" onclick="sendWhatsAppOrder()">Send Order on WhatsApp</button>
     </div>
+    <div class="about-panel" id="aboutPanel">
+        <h2>About Food Haven</h2>
+
+        <p>
+            At Food Haven, we believe food is more than ingredients —
+            it is tradition, comfort, and connection.
+        </p>
+
+        <p>
+            We specialize in premium dry fruits, authentic Indian masalas,
+            and homemade-style pickles crafted with care and quality ingredients.
+        </p>
+
+        <p>
+            Our mission is simple:
+            Deliver fresh, flavorful products that feel like home.
+        </p>
+
+        <p>
+            📍 Based in India<br>
+            📦 Retail & Wholesale Available<br>
+            📱 Direct WhatsApp Ordering
+        </p>
+    </div>
+
 
     <footer class="wholesale-footer">
         <div class="footer-content">
@@ -863,6 +959,9 @@
             logo.classList.add("show");
             searchContainer.classList.add("show");
             cartBtn.classList.add("show");
+            const aboutBtn = document.querySelector(".about-button");
+            aboutBtn.classList.add("show");
+
             hero.classList.add("show");
 
 
@@ -910,7 +1009,7 @@
                     item.className = "search-item";
                     item.innerHTML =
                         `<img src="${card.querySelector("img").src}">
-                             <span>${card.dataset.name}</span>`;
+                                     <span>${card.dataset.name}</span>`;
 
                     item.onclick = function () {
                         const y = card.getBoundingClientRect().top +
@@ -984,15 +1083,15 @@
 
                     html += `
 <div class="cart-item">
-                <div class="cart-left">
-                    <div>${name}</div>
-                    <div class="cart-controls">
-                        <button onclick="removeItem('${name}')">−</button>
-                        <span>${item.qty}</span>
-                        <button onclick="addItem('${name}', ${item.price})">+</button>
-                    </div>
-                </div>
-                <div>₹${itemTotal}</div>
+                        <div class="cart-left">
+                            <div>${name}</div>
+                            <div class="cart-controls">
+                                <button onclick="removeItem('${name}')">−</button>
+                                <span>${item.qty}</span>
+                                <button onclick="addItem('${name}', ${item.price})">+</button>
+                            </div>
+                        </div>
+                        <div>₹${itemTotal}</div>
 </div>
 `;
 
@@ -1019,6 +1118,27 @@
                 else
                     header.classList.remove("hide");
             };
+            window.toggleAbout = function () {
+
+                const about = document.getElementById("aboutPanel");
+                const overlay = document.getElementById("overlay");
+
+                about.classList.toggle("open");
+                overlay.classList.toggle("show");
+
+                if (about.classList.contains("open"))
+                    header.classList.add("hide");
+                else
+                    header.classList.remove("hide");
+            };
+
+            window.closePanels = function () {
+                document.getElementById("cart").classList.remove("open");
+                document.getElementById("aboutPanel").classList.remove("open");
+                document.getElementById("overlay").classList.remove("show");
+                header.classList.remove("hide");
+            };
+
 
 
             /* ================= ORDER ================= */
@@ -1122,9 +1242,9 @@ Order:
 
                     ctx.fillStyle =
                         `rgba(${Math.round(lerp(255, 249, t))},
-                                   ${Math.round(lerp(255, 115, t))},
-                                   ${Math.round(lerp(255, 22, t))},
-                                   0.65)`;
+                                           ${Math.round(lerp(255, 115, t))},
+                                           ${Math.round(lerp(255, 22, t))},
+                                           0.65)`;
 
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
