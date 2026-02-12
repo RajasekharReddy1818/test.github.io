@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Food Haven</title>
 
     <style>
@@ -220,6 +221,7 @@
                 .hero h2 span {
                     color: #823600;
                 }
+
         .hero {
             padding: 160px 20px 120px;
             text-align: center;
@@ -245,6 +247,7 @@
             color: #823600;
             margin-bottom: 40px;
         }
+
         .hero-images {
             position: relative;
             width: 340px;
@@ -404,13 +407,15 @@
 
             .controls button {
                 flex: 1;
-                padding: 12px 0;
+                padding: 14px 0;
                 border: none;
                 border-radius: 8px;
                 font-size: 18px;
                 font-weight: 700;
                 cursor: pointer;
+                touch-action: manipulation;
             }
+
 
         .add {
             background: var(--orange);
