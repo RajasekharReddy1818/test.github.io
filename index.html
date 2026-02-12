@@ -568,6 +568,7 @@
 
             .header-right {
                 gap: 8px;
+                align-items: center;
             }
 
             /* Show magnifying glass */
@@ -575,31 +576,25 @@
                 display: flex;
             }
 
-            /* Hide search container by default */
+            /* Hide search box by default */
             .search-container {
                 display: none;
+                opacity: 1;
+                transform: none;
+                position: static;
+                width: 140px;
             }
 
-            /* When active, show full search */
+            /* When active, show inline */
             .search-wrapper.active .search-container {
                 display: block;
-                position: absolute;
-                top: 55px;
-                right: 0;
-                width: 200px;
-                background: white;
             }
 
-            /* Remove transform trick */
-            .about-link {
-                transform: none !important;
+            /* Move About Us slightly left when search opens */
+            .header-right.search-active .about-link {
+                transform: translateX(-40px);
+                transition: transform .3s ease;
             }
-            .search-container {
-                box-shadow: 0 10px 20px rgba(0,0,0,.08);
-                border-radius: 12px;
-                padding: 8px;
-            }
-
 
             .products {
                 padding: 100px 15px;
@@ -609,6 +604,7 @@
                 grid-template-columns: 1fr;
             }
         }
+
 
 
         /* ABOUT LINK */
@@ -1025,11 +1021,11 @@
                 document.querySelector(".header-right")
                     .classList.toggle("search-active");
 
-
                 if (searchWrapper.classList.contains("active")) {
                     searchInput.focus();
                 }
             });
+
 
 
             searchInput.addEventListener("blur", function () {
