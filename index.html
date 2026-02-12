@@ -566,6 +566,58 @@
                     width: 20%;
                 }
         }
+        /* ABOUT LINK */
+        .about-link {
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+            .about-link:hover {
+                color: var(--orange);
+            }
+
+        /* SEARCH WRAPPER */
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Hide toggle on desktop */
+        .search-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* MOBILE BEHAVIOR */
+        @media(max-width:600px) {
+
+            .search-toggle {
+                display: block;
+            }
+
+            .search-container {
+                display: none;
+                position: absolute;
+                top: 50px;
+                right: 0;
+                width: 200px;
+            }
+
+            .search-wrapper.active .search-container {
+                display: block;
+            }
+
+            .search-wrapper.active .search-input {
+                width: 100%;
+            }
+        }
+
 
 
         footer {
@@ -585,10 +637,18 @@
     <header id="mainHeader">
         <img src="images/foodhaven.png" class="logo">
         <div class="header-right">
-            <div class="search-container">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search food heaven...">
-                <div class="search-results" id="searchResults"></div>
+
+            <a href="#" class="about-link">About Us</a>
+
+            <div class="search-wrapper">
+                <button class="search-toggle">🔍</button>
+
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search food heaven...">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
             </div>
+
             <div class="cart-button" onclick="toggleCart()">
                 <svg viewBox="0 0 24 24">
                     <path d="M6 6h15l-1.5 9h-12z" />
@@ -598,8 +658,8 @@
                 </svg>
                 <div class="cart-count" id="cart-count">0</div>
             </div>
-        </div>
-    </header>
+
+</header>
     <section class="hero">
         <h1 class="hero-title">Food Haven</h1>
         <p class="hero-tagline">Flavors That Feel Like Home</p>
@@ -823,6 +883,7 @@
         <button class="order-btn" onclick="sendWhatsAppOrder()">Send Order on WhatsApp</button>
     </div>
 
+
     <footer class="wholesale-footer">
         <div class="footer-content">
             <h3>Wholesale Orders</h3>
@@ -939,6 +1000,22 @@
             document.addEventListener("click", function (e) {
                 if (!e.target.closest(".search-container"))
                     resultsBox.style.display = "none";
+            });
+            /* ================= MOBILE SEARCH TOGGLE ================= */
+
+            const searchWrapper = document.querySelector(".search-wrapper");
+            const searchToggle = document.querySelector(".search-toggle");
+
+            searchToggle.addEventListener("click", function () {
+                searchWrapper.classList.toggle("active");
+
+                if (searchWrapper.classList.contains("active")) {
+                    searchInput.focus();
+                }
+            });
+
+            searchInput.addEventListener("blur", function () {
+                searchWrapper.classList.remove("active");
             });
 
 
