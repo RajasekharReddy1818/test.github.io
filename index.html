@@ -199,28 +199,6 @@
             justify-content: center;
         }
 
-        /* HERO */
-        .hero {
-            padding: 160px 20px 140px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: .8s ease;
-        }
-
-            .hero.show {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            .hero h2 {
-                font-size: 40px;
-                color: var(--dark);
-            }
-
-                .hero h2 span {
-                    color: #823600;
-                }
 
         .hero {
             padding: 160px 20px 120px;
@@ -484,12 +462,56 @@
                 border-radius: 8px;
                 font-size: 14px;
             }
-
+            .cart textarea {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 12px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 14px;
+                resize: none;
+            }
         .cart-item {
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
+            align-items: flex-start;
         }
+
+
+        .cart-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+            .cart-controls button {
+                width: 28px;
+                height: 28px;
+                border: none;
+                border-radius: 6px;
+                background: var(--orange);
+                color: white;
+                font-weight: 700;
+                cursor: pointer;
+                touch-action: manipulation;
+            }
+
+            .cart-controls span {
+                min-width: 20px;
+                text-align: center;
+                font-weight: 700;
+            }
+
 
         .cart-total {
             margin-top: 20px;
@@ -792,8 +814,10 @@
 
     <div class="cart" id="cart">
         <h3>Your Cart</h3>
-        <input type="text" id="customerName" placeholder="Customer Name">
-        <input type="tel" id="customerPhone" placeholder="Mobile Number">
+       <input type="text" id="customerName" placeholder="Customer Name">
+<input type="tel" id="customerPhone" placeholder="Mobile Number">
+<textarea id="customerAddress" placeholder="Delivery Address" rows="3"></textarea>
+
         <div id="cart-items"></div>
         <div class="cart-total">Total: ₹<span id="total">0</span></div>
         <button class="order-btn" onclick="sendWhatsAppOrder()">Send Order on WhatsApp</button>
@@ -885,7 +909,20 @@
                 const item = cart[name];
                 count += item.qty;
                 total += item.qty * item.price;
-                list.innerHTML += `<div class="cart-item"><span>${name} × ${item.qty}</span><span>₹${item.qty * item.price}</span></div>`;
+                list.innerHTML += `
+<div class="cart-item">
+    <div class="cart-left">
+        <div>${name}</div>
+        <div class="cart-controls">
+            <button onclick="removeItem('${name}')">−</button>
+            <span>${item.qty}</span>
+            <button onclick="addItem('${name}', ${item.price})">+</button>
+        </div>
+    </div>
+    <div>₹${item.qty * item.price}</div>
+</div>
+`;
+
                 const qtyEl = document.getElementById("qty-" + name.replace(/\s+/g, ""));
                 if (qtyEl) {
                     qtyEl.textContent = item.qty;
@@ -915,22 +952,47 @@
         function sendWhatsAppOrder() {
             const name = document.getElementById("customerName").value.trim();
             const phone = document.getElementById("customerPhone").value.trim();
-            if (!name) { alert("Enter customer name."); return; }
-            if (!/^[6-9]\d{9}$/.test(phone)) { alert("Enter valid 10 digit mobile number."); return; }
-            if (Object.keys(cart).length === 0) { alert("Cart is empty."); return; }
+            const address = document.getElementById("customerAddress").value.trim();
+
+            if (!name) {
+                alert("Enter customer name.");
+                return;
+            }
+
+            if (!/^[6-9]\d{9}$/.test(phone)) {
+                alert("Enter valid 10 digit mobile number.");
+                return;
+            }
+
+            if (!address) {
+                alert("Enter delivery address.");
+                return;
+            }
+
+            if (Object.keys(cart).length === 0) {
+                alert("Cart is empty.");
+                return;
+            }
+
             const SELLER_NUMBER = "917989116107";
             const orderId = generateOrderId();
-            let message = `Order ID: ${orderId}\n\nCustomer Details:\nName: ${name}\nMobile: ${phone}\n\nOrder:\n`;
+
+            let message = `Order ID: ${orderId}\n\nCustomer Details:\nName: ${name}\nMobile: ${phone}\nAddress: ${address}\n\nOrder:\n`;
+
             let total = 0;
+
             Object.keys(cart).forEach(itemName => {
                 const item = cart[itemName];
                 const itemTotal = item.qty * item.price;
                 total += itemTotal;
                 message += `- ${itemName} x ${item.qty} = ₹${itemTotal}\n`;
             });
+
             message += `\nTotal: ₹${total}`;
+
             window.open(`https://wa.me/${SELLER_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
         }
+
 
         /* PARTICLES */
         const canvas = document.getElementById("bg-canvas");
