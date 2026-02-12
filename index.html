@@ -532,7 +532,6 @@
             cursor: pointer;
         }
 
-        /* MOBILE FIX */
         @media(max-width:600px) {
 
             header {
@@ -545,6 +544,30 @@
 
             .header-right {
                 gap: 10px;
+                position: relative;
+            }
+
+            .about-link {
+                transition: transform .3s ease;
+            }
+
+            .header-right.search-active .about-link {
+                transform: translateX(-50px);
+            }
+           
+
+
+            .search-container {
+                display: none;
+                position: absolute;
+                top: 50px;
+                right: 0;
+                width: 200px;
+                background: white;
+            }
+
+            .search-wrapper.active .search-container {
+                display: block;
             }
 
             .products {
@@ -554,18 +577,20 @@
             .grid {
                 grid-template-columns: 1fr;
             }
-
-            /* Divider fix */
-            .section-divider {
-                font-size: 20px;
-                margin: 60px auto 40px;
+            .search-toggle {
+                display: flex;
             }
 
-                .section-divider::before,
-                .section-divider::after {
-                    width: 20%;
-                }
+            .search-container {
+                display: none;
+            }
+
+            .search-wrapper.active .search-container {
+                display: block;
+            }
+
         }
+
         /* ABOUT LINK */
         .about-link {
             font-weight: 600;
@@ -584,39 +609,28 @@
             display: flex;
             align-items: center;
         }
-
-        /* Hide toggle on desktop */
         .search-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 20px;
+            display: none; /* hidden on desktop */
+            background: #fff;
+            border: 2px solid #545454;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
         }
 
-        /* MOBILE BEHAVIOR */
-        @media(max-width:600px) {
 
-            .search-toggle {
-                display: block;
+
+            .search-toggle svg {
+                width: 18px;
+                height: 18px;
+                stroke: var(--dark);
             }
 
-            .search-container {
-                display: none;
-                position: absolute;
-                top: 50px;
-                right: 0;
-                width: 200px;
-            }
 
-            .search-wrapper.active .search-container {
-                display: block;
-            }
-
-            .search-wrapper.active .search-input {
-                width: 100%;
-            }
-        }
+       
 
 
 
@@ -641,7 +655,13 @@
             <a href="#" class="about-link">About Us</a>
 
             <div class="search-wrapper">
-                <button class="search-toggle">🔍</button>
+                <button class="search-toggle" aria-label="Search">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none" />
+                        <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </button>
+
 
                 <div class="search-container">
                     <input type="text" class="search-input" id="searchInput" placeholder="Search food heaven...">
@@ -658,7 +678,7 @@
                 </svg>
                 <div class="cart-count" id="cart-count">0</div>
             </div>
-
+        </div>
 </header>
     <section class="hero">
         <h1 class="hero-title">Food Haven</h1>
@@ -1005,18 +1025,21 @@
 
             const searchWrapper = document.querySelector(".search-wrapper");
             const searchToggle = document.querySelector(".search-toggle");
-
             searchToggle.addEventListener("click", function () {
                 searchWrapper.classList.toggle("active");
+                header.classList.toggle("search-active");
 
                 if (searchWrapper.classList.contains("active")) {
                     searchInput.focus();
                 }
             });
 
+
             searchInput.addEventListener("blur", function () {
                 searchWrapper.classList.remove("active");
+                header.classList.remove("search-active");
             });
+
 
 
             /* ================= CART ================= */
