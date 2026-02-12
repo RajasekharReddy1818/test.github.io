@@ -436,6 +436,7 @@
 
         .cart {
             position: fixed;
+            touch-action: pan-y;
             top: 0;
             right: -360px;
             width: 360px;
@@ -548,6 +549,7 @@
         /* ABOUT PANEL */
         .about-panel {
             position: fixed;
+            touch-action: pan-y;
             top: 0;
             left: -360px;
             width: 360px;
@@ -1250,6 +1252,57 @@ Order:
             }
 
             animate();
+            /* ================= SWIPE TO CLOSE ================= */
+
+            function enableSwipe(panel, direction) {
+
+                let startX = 0;
+                let currentX = 0;
+                let isDragging = false;
+
+                panel.addEventListener("touchstart", function (e) {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                });
+
+                panel.addEventListener("touchmove", function (e) {
+                    if (!isDragging) return;
+
+                    currentX = e.touches[0].clientX;
+                    let diff = currentX - startX;
+
+                    // Cart closes when swiping left
+                    if (direction === "left" && diff < 0) {
+                        panel.style.transform = `translateX(${diff}px)`;
+                    }
+
+                    // About closes when swiping right
+                    if (direction === "right" && diff > 0) {
+                        panel.style.transform = `translateX(${diff}px)`;
+                    }
+                });
+
+                panel.addEventListener("touchend", function () {
+
+                    let diff = currentX - startX;
+
+                    // Threshold distance to close
+                    if (
+                        (direction === "left" && diff < -80) ||
+                        (direction === "right" && diff > 80)
+                    ) {
+                        closePanels();
+                    }
+
+                    panel.style.transform = "";
+                    isDragging = false;
+                });
+            }
+
+            // Enable swipe
+            enableSwipe(document.getElementById("cart"), "left");
+            enableSwipe(document.getElementById("aboutPanel"), "right");
+
 
         });
     </script>
