@@ -436,7 +436,6 @@
 
         .cart {
             position: fixed;
-            touch-action: pan-y;
             top: 0;
             right: -360px;
             width: 360px;
@@ -549,21 +548,20 @@
         /* ABOUT PANEL */
         .about-panel {
             position: fixed;
-            touch-action: pan-y;
             top: 0;
-            left: -360px;
+            right: -360px;
             width: 360px;
             height: 100%;
             background: #fff;
             padding: 30px;
-            box-shadow: 10px 0 30px rgba(0,0,0,.15);
+            box-shadow: -10px 0 30px rgba(0,0,0,.15);
             transition: .3s ease;
             z-index: 999;
             overflow-y: auto;
         }
 
             .about-panel.open {
-                left: 0;
+                right: 0;
             }
 
             .about-panel h2 {
