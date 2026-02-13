@@ -903,29 +903,53 @@
         <button class="order-btn" onclick="sendWhatsAppOrder()">Send Order on WhatsApp</button>
     </div>
     <div class="about-panel" id="aboutPanel">
-        <h2>About Food Haven</h2>
+
+        <h2>About Us – Food Haven</h2>
 
         <p>
-            At Food Haven, we believe food is more than ingredients —
-            it is tradition, comfort, and connection.
+            Food Haven is a trusted and quality-focused food company committed to delivering
+            safe, hygienic, and great-tasting food products. We believe that good food is the
+            foundation of a healthy and happy life, and our goal is to bring quality and trust
+            to every customer.
         </p>
 
         <p>
-            We specialize in premium dry fruits, authentic Indian masalas,
-            and homemade-style pickles crafted with care and quality ingredients.
+            At Food Haven, we follow strict quality control processes and use carefully
+            selected raw materials to ensure consistent taste and superior standards.
+            Our products are prepared using modern techniques and processed under hygienic
+            conditions in compliance with food safety norms.
         </p>
 
         <p>
-            Our mission is simple:
-            Deliver fresh, flavorful products that feel like home.
+            We focus on customer satisfaction by maintaining high-quality standards,
+            reliable sourcing, and timely delivery. Every product from Food Haven reflects
+            our dedication to purity, freshness, and excellence.
         </p>
 
+        <h3>Our Strengths</h3>
         <p>
-            📍 Based in India<br>
-            📦 Retail & Wholesale Available<br>
-            📱 Direct WhatsApp Ordering
+            ✔ High-quality raw materials<br>
+            ✔ Hygienic and safe processing<br>
+            ✔ Consistent taste and premium quality<br>
+            ✔ Customer-focused approach<br>
+            ✔ Fair pricing and dependable service
         </p>
+
+        <h3>Our Vision</h3>
+        <p>
+            To become a leading food brand by providing healthy, safe, and delicious
+            food products that customers can trust.
+        </p>
+
+        <h3>Our Mission</h3>
+        <p>
+            ✔ To deliver high-quality and hygienic food products<br>
+            ✔ To follow strict food safety and quality standards<br>
+            ✔ To continuously improve through innovation and excellence
+        </p>
+
     </div>
+
 
 
     <footer class="wholesale-footer">
@@ -1024,7 +1048,7 @@
                     item.className = "search-item";
                     item.innerHTML =
                         `<img src="${card.querySelector("img").src}">
-                                         <span>${card.dataset.name}</span>`;
+                                             <span>${card.dataset.name}</span>`;
 
                     item.onclick = function () {
                         const y = card.getBoundingClientRect().top +
@@ -1098,15 +1122,15 @@
 
                     html += `
 <div class="cart-item">
-                            <div class="cart-left">
-                                <div>${name}</div>
-                                <div class="cart-controls">
-                                    <button onclick="removeItem('${name}')">−</button>
-                                    <span>${item.qty}</span>
-                                    <button onclick="addItem('${name}', ${item.price})">+</button>
+                                <div class="cart-left">
+                                    <div>${name}</div>
+                                    <div class="cart-controls">
+                                        <button onclick="removeItem('${name}')">−</button>
+                                        <span>${item.qty}</span>
+                                        <button onclick="addItem('${name}', ${item.price})">+</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>₹${itemTotal}</div>
+                                <div>₹${itemTotal}</div>
 </div>
 `;
 
@@ -1258,9 +1282,9 @@ Order:
 
                     ctx.fillStyle =
                         `rgba(${Math.round(lerp(255, 249, t))},
-                                               ${Math.round(lerp(255, 115, t))},
-                                               ${Math.round(lerp(255, 22, t))},
-                                               0.65)`;
+                                                   ${Math.round(lerp(255, 115, t))},
+                                                   ${Math.round(lerp(255, 22, t))},
+                                                   0.65)`;
 
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
