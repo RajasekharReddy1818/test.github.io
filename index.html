@@ -555,16 +555,18 @@
             height: 100%;
             background: #fff;
             padding: 30px;
-            display: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s ease;
             z-index: 999;
             overflow-y: auto;
             box-shadow: -10px 0 30px rgba(0,0,0,.15);
         }
 
 
-
             .about-panel.open {
-                display: block;
+                opacity: 1;
+                pointer-events: auto;
             }
 
 
